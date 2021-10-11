@@ -1,4 +1,4 @@
-package com.tambapps.groovy.groovyb
+package com.tambapps.groovy.groovybe
 
 import groovy.transform.CompileStatic
 

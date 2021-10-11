@@ -1,9 +1,9 @@
-package com.tambapps.groovy.groovyb
+package com.tambapps.groovy.groovybe
 
 import groovy.transform.CompileStatic
 
 @CompileStatic
-class GroovyBinaryGenerator {
+class Groovybe {
 
   static void main(String[] args) throws IOException {
     GroovyCompiler compiler = new GroovyCompiler()

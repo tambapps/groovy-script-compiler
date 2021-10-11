@@ -1,4 +1,4 @@
-package com.tambapps.groovy.groovyb
+package com.tambapps.groovy.groovybe
 
 import static org.junit.jupiter.api.Assertions.assertTrue
 
