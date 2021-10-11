@@ -1,8 +1,10 @@
 package com.tambapps.groovy.groovyb;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
@@ -29,7 +31,20 @@ public class ScriptJarOutputStream extends JarOutputStream {
   public void write() throws IOException {
     JarEntry entry = new JarEntry(scriptClassFile.getName());
     entry.setTime(scriptClassFile.lastModified());
+
     putNextEntry(entry);
+    writeScriptFile();
+    closeEntry();
     flush();
+  }
+
+  private void writeScriptFile() throws IOException {
+    byte[] buf = new byte[8192];
+    int count;
+    try (InputStream inputStream = new FileInputStream(scriptClassFile)) {
+      while(-1 != (count = inputStream.read(buf))) {
+        write(buf, 0, count);
+      }
+    }
   }
 }
