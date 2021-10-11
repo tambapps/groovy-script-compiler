@@ -13,11 +13,9 @@ class ScriptJarOutputStream extends JarOutputStream {
   private static Manifest generateManifest(File scriptClassFile) {
     Manifest manifest = new Manifest()
     Attributes mainAttributes = manifest.getMainAttributes()
-    mainAttributes.put(Attributes.Name.MANIFEST_VERSION, "1.0")
     mainAttributes[Attributes.Name.MANIFEST_VERSION] = "1.0"
     mainAttributes[Attributes.Name.MAIN_CLASS] = scriptClassFile.getName().substring(0, scriptClassFile.getName().indexOf('.'))
     mainAttributes[new Attributes.Name("Created-By")] = "Tambapps"
-    mainAttributes[new Attributes.Name("Build-Jdk")] = System.getProperty("java.version")
     return manifest
   }
 

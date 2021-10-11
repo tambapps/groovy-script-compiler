@@ -1,12 +1,10 @@
 package com.tambapps.groovy.groovybe
 
 import groovy.transform.CompileStatic
-import lombok.AllArgsConstructor
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.tools.FileSystemCompiler
 
 @CompileStatic
-@AllArgsConstructor
 class GroovyCompiler {
 
   private static final File CURRENT_DIRECTORY = new File("." + File.separator)
