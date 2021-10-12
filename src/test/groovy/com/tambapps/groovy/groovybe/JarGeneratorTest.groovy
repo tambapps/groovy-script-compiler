@@ -1,6 +1,6 @@
 package com.tambapps.groovy.groovybe
 
-import com.tambapps.groovy.groovybe.io.ScriptJarOutputStream
+import com.tambapps.groovy.groovybe.io.stream.ScriptJarOutputStream
 
 import static org.junit.jupiter.api.Assertions.assertTrue
 

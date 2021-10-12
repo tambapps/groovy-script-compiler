@@ -1,4 +1,4 @@
-package com.tambapps.groovy.groovybe
+package com.tambapps.groovy.groovybe.io
 
 import com.tambapps.maven.dependency.resolver.DependencyResolver
 import com.tambapps.maven.dependency.resolver.data.DependencyResolvingResult

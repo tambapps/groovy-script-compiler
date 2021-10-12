@@ -1,7 +1,9 @@
 package com.tambapps.groovy.groovybe
 
-import com.tambapps.groovy.groovybe.io.JarMergingOutputStream
-import com.tambapps.groovy.groovybe.io.ScriptJarOutputStream
+import com.tambapps.groovy.groovybe.io.GroovyCompiler
+import com.tambapps.groovy.groovybe.io.GroovyDepsFetcher
+import com.tambapps.groovy.groovybe.io.stream.JarMergingOutputStream
+import com.tambapps.groovy.groovybe.io.stream.ScriptJarOutputStream
 import com.tambapps.groovy.groovybe.util.Utils
 
 GroovyCompiler compiler = new GroovyCompiler()
