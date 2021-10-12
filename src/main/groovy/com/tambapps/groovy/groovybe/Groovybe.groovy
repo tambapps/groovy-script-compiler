@@ -17,7 +17,7 @@ try (ScriptJarOutputStream os = new ScriptJarOutputStream(jarFile, classFile)) {
 
 List<File> groovyJars = groovyDepsFetcher.fetch()
 
-File jarWithDependencies = new File(Utils.CURRENT_DIRECTORY, Utils.nameWithExtension(classFile, "-with-dependencies.jar"))
+File jarWithDependencies = new File(Utils.CURRENT_DIRECTORY, Utils.nameWithExtension(classFile, "jar-with-dependencies.jar"))
 try (JarMergingOutputStream os = new JarMergingOutputStream(new FileOutputStream(jarWithDependencies))) {
   os.writeJar(jarFile)
   for (groovyJar in groovyJars) {
