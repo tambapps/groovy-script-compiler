@@ -21,7 +21,7 @@ class GroovyCompiler {
     try {
       compiler.compile(files)
       return files.collect {
-        new File(Groovybe.CURRENT_DIRECTORY, Utils.nameWithExtension(it, ".class"))
+        new File(Utils.CURRENT_DIRECTORY, Utils.nameWithExtension(it, ".class"))
       }
     } catch (Exception e) {
       throw new IOException(e)
