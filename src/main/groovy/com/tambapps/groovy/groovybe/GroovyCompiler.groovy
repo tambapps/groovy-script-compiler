@@ -7,7 +7,6 @@ import org.codehaus.groovy.tools.FileSystemCompiler
 @CompileStatic
 class GroovyCompiler {
 
-  private static final File CURRENT_DIRECTORY = new File("." + File.separator)
   // this is the class used by groovyc
   private final FileSystemCompiler compiler
 
@@ -21,7 +20,7 @@ class GroovyCompiler {
     try {
       compiler.compile(files)
       return files.collect {
-        new File(CURRENT_DIRECTORY, Utils.nameWithExtension(it, ".class"))
+        new File(Groovybe.CURRENT_DIRECTORY, Utils.nameWithExtension(it, ".class"))
       }
     } catch (Exception e) {
       throw new IOException(e)
