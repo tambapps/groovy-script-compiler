@@ -15,24 +15,13 @@ class JarMergingOutputStream extends JarOutputStream {
     super(out)
   }
 
-  void writeMainJar(File mainJar) throws IOException {
-    JarFile jarFile = new JarFile(mainJar)
-    for (JarEntry entry : jarFile.entries()) {
-      putNextEntry(entry)
-      writtenEntries.add(entry.name)
-      try (InputStream is = jarFile.getInputStream(entry)) {
-        IOUtils.copyStream(is, this)
-      }
-      closeEntry()
-    }
-  }
-
   void writeJar(File mainJar) throws IOException {
     JarFile jarFile = new JarFile(mainJar)
     for (JarEntry entry : jarFile.entries()) {
       if (writtenEntries.contains(entry.name)) {
         continue
       }
+      writtenEntries.add(entry.name)
       putNextEntry(entry)
       try (InputStream is = jarFile.getInputStream(entry)) {
         IOUtils.copyStream(is, this)

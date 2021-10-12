@@ -17,10 +17,13 @@ List<File> groovyJars = groovyDepsFetcher.fetch()
 
 File jarWithDependencies = new File(Utils.CURRENT_DIRECTORY, Utils.nameWithExtension(classFile, "-with-dependencies.jar"))
 try (JarMergingOutputStream os = new JarMergingOutputStream(new FileOutputStream(jarWithDependencies))) {
-  os.writeMainJar(jarFile)
+  os.writeJar(jarFile)
   for (groovyJar in groovyJars) {
     os.writeJar(groovyJar)
   }
   os.flush()
 }
 // TODO call jpackage
+
+// cleaning
+[classFile, jarFile, /*jarWithDependencies*/]*.delete()
