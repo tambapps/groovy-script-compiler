@@ -1,5 +1,6 @@
-package com.tambapps.groovy.groovybe
+package com.tambapps.groovy.groovybe.io
 
+import com.tambapps.groovy.groovybe.util.IOUtils
 import groovy.transform.CompileStatic
 
 import java.util.jar.Attributes
@@ -31,18 +32,11 @@ class ScriptJarOutputStream extends JarOutputStream {
     entry.setTime(scriptClassFile.lastModified())
 
     putNextEntry(entry)
-    writeScriptFile()
+    try (InputStream inputStream = new FileInputStream(scriptClassFile)) {
+      IOUtils.copyStream(inputStream, this)
+    }
     closeEntry()
     flush()
   }
 
-  private void writeScriptFile() throws IOException {
-    byte[] buf = new byte[8192]
-    int count
-    try (InputStream inputStream = new FileInputStream(scriptClassFile)) {
-      while(-1 != (count = inputStream.read(buf))) {
-        write(buf, 0, count)
-      }
-    }
-  }
 }

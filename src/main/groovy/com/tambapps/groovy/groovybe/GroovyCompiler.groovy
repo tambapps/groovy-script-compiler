@@ -1,5 +1,6 @@
 package com.tambapps.groovy.groovybe
 
+import com.tambapps.groovy.groovybe.util.Utils
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.tools.FileSystemCompiler

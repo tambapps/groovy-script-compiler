@@ -2,7 +2,6 @@ package com.tambapps.groovy.groovybe
 
 import com.tambapps.maven.dependency.resolver.DependencyResolver
 import com.tambapps.maven.dependency.resolver.data.DependencyResolvingResult
-import com.tambapps.maven.dependency.resolver.data.PomArtifact
 import com.tambapps.maven.dependency.resolver.repository.RemoteMavenRepository
 import com.tambapps.maven.dependency.resolver.repository.RemoteSavingMavenRepository
 import com.tambapps.maven.dependency.resolver.version.FirstVersionFoundConflictResolver
