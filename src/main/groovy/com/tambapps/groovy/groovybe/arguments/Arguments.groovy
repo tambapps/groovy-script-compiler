@@ -7,7 +7,7 @@ class Arguments {
   @CommandLine.Parameters(paramLabel = "SCRIPTFILE", description = 'The script file to compile')
   File scriptFile
 
-  @CommandLine.Option(names = ['-o', '--output'], description = 'Output')
+  @CommandLine.Option(names = ['-t', '--type'], description = 'The type of output to create')
   OutputType outputType = OutputType.JAR
 
   @CommandLine.Option(names = ['-v', '--version'], description = 'Groovy version to use')
