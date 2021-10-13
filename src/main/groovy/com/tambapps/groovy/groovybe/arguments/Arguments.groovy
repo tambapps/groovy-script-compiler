@@ -1,6 +1,7 @@
 package com.tambapps.groovy.groovybe.arguments
 
 import picocli.CommandLine
+import picocli.CommandLine.ParameterException
 
 class Arguments {
   @CommandLine.Option(names = ['-o', '--output'], description = 'Output')
@@ -16,7 +17,12 @@ class Arguments {
     Arguments arguments = new Arguments()
     def commandLine = new CommandLine(arguments)
     commandLine.setCaseInsensitiveEnumValuesAllowed(true)
-    def result = commandLine.parseArgs(args)
+    try {
+      commandLine.parseArgs(args)
+    } catch (CommandLine.PicocliException e) {
+      println(e.message)
+      return null
+    }
     if (arguments.help) {
       commandLine.usage(new PrintWriter(System.out))
       return null
