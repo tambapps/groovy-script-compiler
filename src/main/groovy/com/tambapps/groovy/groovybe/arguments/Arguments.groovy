@@ -4,7 +4,7 @@ import picocli.CommandLine
 
 class Arguments {
 
-  @CommandLine.Parameters(paramLabel = "SCRIPTFILE", description = 'The script file to compile')
+  @CommandLine.Parameters(paramLabel = "SCRIPTFILE", description = 'The script file to compile', arity = '1')
   File scriptFile
 
   @CommandLine.Option(names = ['-t', '--type'], description = 'The type of output to create')
@@ -34,9 +34,6 @@ class Arguments {
     }
     if (arguments.help) {
       commandLine.usage(new PrintWriter(System.out))
-      return null
-    }
-    if (!arguments.scriptFile) {
       return null
     }
     return arguments

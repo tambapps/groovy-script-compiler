@@ -16,8 +16,6 @@ class Jpackage {
     this.jpackageFile = jpackageFile
   }
 
-  // TODO make function to run jpackage
-
   void run(File inputDir, File jarFile, String className) {
     List<String> command = [
         jpackageFile.absolutePath,
