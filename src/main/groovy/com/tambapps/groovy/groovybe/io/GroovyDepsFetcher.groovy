@@ -2,7 +2,6 @@ package com.tambapps.groovy.groovybe.io
 
 import com.tambapps.groovy.groovybe.arguments.GroovySubProjects
 import com.tambapps.maven.dependency.resolver.DependencyResolver
-import com.tambapps.maven.dependency.resolver.data.DependencyResolvingResult
 import com.tambapps.maven.dependency.resolver.repository.RemoteSavingMavenRepository
 import com.tambapps.maven.dependency.resolver.version.FirstVersionFoundConflictResolver
 
@@ -22,7 +21,8 @@ class GroovyDepsFetcher {
         resolver.resolve('org.codehaus.groovy', submodule.artifactId, groovyVersion)
       }
     }
-    DependencyResolvingResult result = resolver.results
-    return result.getArtifacts(new FirstVersionFoundConflictResolver()).collect(repository.&getJarFile)
+    return resolver.results
+        .getArtifacts(new FirstVersionFoundConflictResolver())
+        .collect(repository.&getJarFile)
   }
 }
