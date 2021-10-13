@@ -17,11 +17,7 @@ class GroovybeIT {
     Groovybe.main(new String[] {scriptFile.path})
     File outputJar = new File(Utils.CURRENT_DIRECTORY, "HelloWorld-with-dependencies.jar")
     assertTrue(outputJar.exists())
-    Process process = "$JAVA_FILE -jar $outputJar".execute()
-    StringBuilder builder = new StringBuilder()
-    process.consumeProcessOutput(builder, builder)
-    process.waitFor()
-    assertEquals("Hello World", builder.toString())
+    assertEquals("Hello World", java(outputJar))
 
     outputJar.delete()
   }
@@ -31,13 +27,17 @@ class GroovybeIT {
     Groovybe.main(new String[] {scriptFile.path, '-s', 'json'})
     File outputJar = new File(Utils.CURRENT_DIRECTORY, "HelloWorldJson-with-dependencies.jar")
     assertTrue(outputJar.exists())
-    Process process = "$JAVA_FILE -jar $outputJar".execute()
+    assertEquals("Pierre", java(outputJar))
+
+    outputJar.delete()
+  }
+
+  private static String java(File jarFile) {
+    Process process = "$JAVA_FILE -jar $jarFile".execute()
     StringBuilder builder = new StringBuilder()
     process.consumeProcessOutput(builder, builder)
     process.waitFor()
-    assertEquals("Pierre", builder.toString())
-
-    outputJar.delete()
+    return builder.toString().trim()
   }
 
   private static File findJava() {
