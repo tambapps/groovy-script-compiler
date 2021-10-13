@@ -27,7 +27,13 @@ class Jpackage {
         return new Jpackage(jpackageFile)
       }
     }
-    jpackageFile = findFromIntelIjJdksPlusHome()
+
+    jpackageFile = findFromJdksPath(new File("/usr/lib/jvm"))
+    if (jpackageFile != null) {
+      return new Jpackage(jpackageFile)
+    }
+    // find from intelIJ jdks
+    jpackageFile = findFromJdksPath(new File(Utils.HOME_DIRECTORY, ".jdks"))
     if (jpackageFile != null) {
       return new Jpackage(jpackageFile)
     }
@@ -35,15 +41,20 @@ class Jpackage {
     throw new JpackageNotFoundException()
   }
 
-  private static File findFromIntelIjJdksPlusHome() {
-    File jdksPath = new File(Utils.HOME_DIRECTORY, ".jdks")
-
-    File[] jdks = jdksPath.listFiles()
+  private static File findFromJdksPath(File jdksPath) {
+    File[] jdks = jdksPath.listFiles { File f -> f.isDirectory() }
     for (jdk in jdks) {
       int lastDash = jdk.name.lastIndexOf('-')
-      int version = jdk.name.substring(lastDash + 1).takeWhile {it.isNumber() }.toInteger()
+      if (lastDash < 0) {
+        continue
+      }
+      String sNumber = jdk.name.substring(lastDash + 1).takeWhile {it.isNumber() }
+      if (!sNumber.isNumber()) {
+        continue
+      }
+      int version = sNumber.toInteger()
       if (version >= 14) {
-        // JDK14+ ? yay, let's see check if it has jpackage
+        // JDK14+ ? yay, let's still check if it has jpackage
         File jpackageFile = new File(jdk, JPACKAGE_PATH)
         if (jpackageFile.exists()) {
           return jpackageFile
