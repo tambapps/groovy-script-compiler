@@ -13,7 +13,10 @@ class Arguments {
   @CommandLine.Option(names = ['-v', '--version'], description = 'Groovy version to use')
   String version = '3.0.9'
 
-  @CommandLine.Option(names = ['-s', '--groovy-subprojects'], description = 'Comma-separated list ofGroovy subprojects to include in the jar', split = ',')
+  @CommandLine.Option(names = ['-j', '--jpackage-path'], description = "Path of jpackage. Only useful for 'appimage' type")
+  File jpackageFile = null
+
+  @CommandLine.Option(names = ['-s', '--groovy-subprojects'], description = 'Comma-separated list of Groovy subprojects to include in the jar', split = ',')
   List<GroovySubProjects> subProjects = []
 
   @CommandLine.Option(names = ['-a', '--additional-jars'], description = 'Comma-separated list of Additional jars. E.g. if your script use a non Groovy library, it would be the jar of the library', split = ',')
@@ -34,6 +37,10 @@ class Arguments {
     }
     if (arguments.help) {
       commandLine.usage(new PrintWriter(System.out))
+      return null
+    }
+    if (arguments.jpackageFile != null && !arguments.jpackageFile.exists()) {
+      println("${arguments.jpackageFile} doesn't exists")
       return null
     }
     return arguments

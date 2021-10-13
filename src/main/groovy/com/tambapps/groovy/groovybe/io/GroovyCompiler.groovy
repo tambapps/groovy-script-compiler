@@ -16,7 +16,7 @@ class GroovyCompiler {
       // private properties, but groovy magic do the extra-work for me
       it.targetDir = targetDir
       printStack = true
-      classpath = deps.collect { it.absolutePath }.join(':')
+      classpath = deps.collect { it.absolutePath }.join(File.pathSeparator)
     }.toCompilerConfiguration()
     this.compiler = new FileSystemCompiler(configuration, null)
   }

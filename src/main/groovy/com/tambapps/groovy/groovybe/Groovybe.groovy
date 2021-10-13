@@ -44,7 +44,8 @@ try {
       jarWithDependencies.renameTo(new File(Utils.CURRENT_DIRECTORY, jarWithDependencies.name))
       break
     case OutputType.APPIMAGE:
-      Jpackage jpackage = Jpackage.newInstance()
+      Jpackage jpackage = arguments.jpackageFile != null ? new Jpackage(arguments.jpackageFile)
+          : Jpackage.newInstance()
       // dir containing all files that will be packaged (should be just the fat jar)
       File jpackageInputDir = new File(tempDir, "jpackage_input")
       jpackageInputDir.mkdir()
