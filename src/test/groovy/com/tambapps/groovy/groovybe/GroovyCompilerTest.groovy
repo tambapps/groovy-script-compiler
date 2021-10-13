@@ -1,6 +1,7 @@
 package com.tambapps.groovy.groovybe
 
 import com.tambapps.groovy.groovybe.io.GroovyCompiler
+import com.tambapps.groovy.groovybe.util.Utils
 
 import static org.junit.jupiter.api.Assertions.assertTrue
 
@@ -10,7 +11,7 @@ class GroovyCompilerTest {
 
   @Test
   void test() throws Exception {
-    GroovyCompiler compiler = new GroovyCompiler()
+    GroovyCompiler compiler = new GroovyCompiler(Utils.CURRENT_DIRECTORY)
     File file = new File(GroovyCompilerTest.class.getResource("/HelloWorld.groovy").toURI())
 
     List<File> compiledFiles = compiler.compile(file)

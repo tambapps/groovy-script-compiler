@@ -7,27 +7,35 @@ import com.tambapps.groovy.groovybe.io.stream.JarMergingOutputStream
 import com.tambapps.groovy.groovybe.io.stream.ScriptJarOutputStream
 import com.tambapps.groovy.groovybe.util.Utils
 
-GroovyCompiler compiler = new GroovyCompiler()
+File tempDir = File.createTempDir('groovybe')
+// dir containing all files that will be packaged (should be just the fat jar)
+File jpackageInputDir = new File(tempDir, "jpackage_input")
+jpackageInputDir.mkdir()
+
+GroovyCompiler compiler = new GroovyCompiler(tempDir)
 GroovyDepsFetcher groovyDepsFetcher = new GroovyDepsFetcher()
 Jpackage jpackage = Jpackage.newInstance()
 
-File classFile = compiler.compile(new File(args[0])).get(0)
-File jarFile = new File(classFile.parent, Utils.nameWithExtension(classFile, ".jar"))
-try (ScriptJarOutputStream os = new ScriptJarOutputStream(jarFile, classFile)) {
-  os.write()
-}
-
-List<File> groovyJars = groovyDepsFetcher.fetch()
-
-File jarWithDependencies = new File(Utils.CURRENT_DIRECTORY, Utils.nameWithExtension(classFile, "jar-with-dependencies.jar"))
-try (JarMergingOutputStream os = new JarMergingOutputStream(new FileOutputStream(jarWithDependencies))) {
-  os.writeJar(jarFile)
-  for (groovyJar in groovyJars) {
-    os.writeJar(groovyJar)
+try {
+  File classFile = compiler.compile(new File(args[0])).get(0)
+  String className = Utils.nameWithExtension(classFile, '')
+  File jarFile = new File(tempDir, "${className}.jar")
+  try (ScriptJarOutputStream os = new ScriptJarOutputStream(jarFile, classFile)) {
+    os.write()
   }
-  os.flush()
-}
-// TODO call jpackage
 
-// cleaning
-[classFile, jarFile, /*jarWithDependencies*/]*.delete()
+  List<File> groovyJars = groovyDepsFetcher.fetch()
+
+  File jarWithDependencies = new File(jpackageInputDir, "${className}-with-dependencies.jar")
+  try (JarMergingOutputStream os = new JarMergingOutputStream(new FileOutputStream(jarWithDependencies))) {
+    os.writeJar(jarFile)
+    for (groovyJar in groovyJars) {
+      os.writeJar(groovyJar)
+    }
+    os.flush()
+  }
+  jpackage.run(jpackageInputDir, jarWithDependencies, className)
+} finally {
+  // cleaning
+  tempDir.deleteDir()
+}

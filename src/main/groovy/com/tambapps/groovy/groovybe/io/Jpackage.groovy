@@ -18,6 +18,23 @@ class Jpackage {
 
   // TODO make function to run jpackage
 
+  void run(File inputDir, File jarFile, String className) {
+    List<String> command = [
+        jpackageFile.absolutePath,
+        '--input', inputDir.absolutePath,
+        '--main-jar', jarFile.name,
+        '--name', className,
+        '--main-class', className,
+        '--type', 'app-image'
+    ]
+
+    Process process = command.join(' ').execute()
+    def out = new StringBuilder()
+    process.consumeProcessOutput(out, out)
+    process.waitFor()
+    println(out)
+  }
+
   static Jpackage newInstance() {
     String javaHome = System.getenv("JAVA_HOME")
     File jpackageFile
