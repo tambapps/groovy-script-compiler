@@ -2,12 +2,14 @@ package com.tambapps.groovy.groovybe
 
 import com.tambapps.groovy.groovybe.io.GroovyCompiler
 import com.tambapps.groovy.groovybe.io.GroovyDepsFetcher
+import com.tambapps.groovy.groovybe.io.Jpackage
 import com.tambapps.groovy.groovybe.io.stream.JarMergingOutputStream
 import com.tambapps.groovy.groovybe.io.stream.ScriptJarOutputStream
 import com.tambapps.groovy.groovybe.util.Utils
 
 GroovyCompiler compiler = new GroovyCompiler()
 GroovyDepsFetcher groovyDepsFetcher = new GroovyDepsFetcher()
+Jpackage jpackage = Jpackage.newInstance()
 
 File classFile = compiler.compile(new File(args[0])).get(0)
 File jarFile = new File(classFile.parent, Utils.nameWithExtension(classFile, ".jar"))
