@@ -15,15 +15,11 @@ if (!arguments) {
 }
 
 File tempDir = File.createTempDir('groovybe')
-// dir containing all files that will be packaged (should be just the fat jar)
-File jpackageInputDir = new File(tempDir, "jpackage_input")
-jpackageInputDir.mkdir()
 
-GroovyCompiler compiler = new GroovyCompiler(tempDir)
-GroovyDepsFetcher groovyDepsFetcher = new GroovyDepsFetcher()
-Jpackage jpackage = Jpackage.newInstance()
 
 try {
+  GroovyCompiler compiler = new GroovyCompiler(tempDir)
+  GroovyDepsFetcher groovyDepsFetcher = new GroovyDepsFetcher()
   File classFile = compiler.compile(arguments.scriptFile)[0]
   String className = Utils.nameWithExtension(classFile, '')
   File jarFile = new File(tempDir, "${className}.jar")
@@ -33,7 +29,7 @@ try {
 
   List<File> groovyJars = groovyDepsFetcher.fetch()
 
-  File jarWithDependencies = new File(jpackageInputDir, "${className}-with-dependencies.jar")
+  File jarWithDependencies = new File(tempDir, "${className}-with-dependencies.jar")
   try (JarMergingOutputStream os = new JarMergingOutputStream(new FileOutputStream(jarWithDependencies))) {
     os.writeJar(jarFile)
     for (groovyJar in groovyJars) {
@@ -42,7 +38,15 @@ try {
     os.flush()
   }
   switch (arguments.outputType) {
-    case OutputType.APP_IMAGE:
+    case OutputType.JAR:
+      jarWithDependencies.renameTo(new File(Utils.CURRENT_DIRECTORY, jarWithDependencies.name))
+      break
+    case OutputType.APPIMAGE:
+      Jpackage jpackage = Jpackage.newInstance()
+      // dir containing all files that will be packaged (should be just the fat jar)
+      File jpackageInputDir = new File(tempDir, "jpackage_input")
+      jpackageInputDir.mkdir()
+      jarWithDependencies.renameTo(new File(jpackageInputDir, jarWithDependencies.name))
       jpackage.run(jpackageInputDir, jarWithDependencies, className)
       break
   }

@@ -4,7 +4,7 @@ import picocli.CommandLine
 
 class Arguments {
   @CommandLine.Option(names = ['-o', '--output'], description = 'Output')
-  OutputType outputType = OutputType.APP_IMAGE
+  OutputType outputType = OutputType.JAR
 
   @CommandLine.Parameters(paramLabel = "SCRIPTFILE", description = 'The script file to compile')
   File scriptFile
@@ -15,7 +15,8 @@ class Arguments {
   static Arguments parseArgs(String[] args) {
     Arguments arguments = new Arguments()
     def commandLine = new CommandLine(arguments)
-    commandLine.parseArgs(args).errors()
+    commandLine.setCaseInsensitiveEnumValuesAllowed(true)
+    def result = commandLine.parseArgs(args)
     if (arguments.help) {
       commandLine.usage(new PrintWriter(System.out))
       return null
