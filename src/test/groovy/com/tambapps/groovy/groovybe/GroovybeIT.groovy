@@ -44,6 +44,18 @@ class GroovybeIT {
 
     outputJar.delete()
   }
+  @Test
+  void testBuildJarJsonWithAdditionalDependency() {
+    File scriptFile = getResourceFile("/HelloWorldHyperPoet.groovy")
+    // get hyperpoet jar from maven repository
+    File additionalJarDep = new File(Utils.HOME_DIRECTORY, '/.m2/repository/com/tambapps/http/hyperpoet/1.1.0-SNAPSHOT/hyperpoet-1.1.0-SNAPSHOT.jar')
+    Groovybe.main(new String[] {scriptFile.path, '-s', 'json', '-a', additionalJarDep.absolutePath})
+    File outputJar = new File(Utils.CURRENT_DIRECTORY, "HelloWorldHyperPoet-with-dependencies.jar")
+    assertTrue(outputJar.exists())
+    assertEquals("ContentType", java(outputJar))
+
+    outputJar.delete()
+  }
 
   private static String java(File jarFile) {
     return execute("$JAVA_FILE -jar $jarFile")
