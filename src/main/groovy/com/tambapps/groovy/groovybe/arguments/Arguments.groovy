@@ -1,7 +1,6 @@
 package com.tambapps.groovy.groovybe.arguments
 
 import picocli.CommandLine
-import picocli.CommandLine.ParameterException
 
 class Arguments {
   @CommandLine.Option(names = ['-o', '--output'], description = 'Output')
