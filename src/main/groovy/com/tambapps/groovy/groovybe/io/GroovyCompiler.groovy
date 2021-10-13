@@ -10,22 +10,21 @@ class GroovyCompiler {
   private final FileSystemCompiler compiler
   private final File targetDir
 
-  GroovyCompiler(File targetDir) throws IOException {
+  GroovyCompiler(File targetDir, List<File> deps) throws IOException {
     this.targetDir = targetDir
-    FileSystemCompiler.CompilationOptions options = new FileSystemCompiler.CompilationOptions()
-    // private property, but groovy magic do the extra-work for me
-    options.targetDir = targetDir
-    options.printStack = true
-    CompilerConfiguration configuration = options.toCompilerConfiguration()
+    CompilerConfiguration configuration = new FileSystemCompiler.CompilationOptions().tap {
+      // private properties, but groovy magic do the extra-work for me
+      it.targetDir = targetDir
+      printStack = true
+      classpath = deps.collect { it.absolutePath }.join(':')
+    }.toCompilerConfiguration()
     this.compiler = new FileSystemCompiler(configuration, null)
   }
 
-  List<File> compile(File... files) throws IOException {
+  File compile(File scriptFile) throws IOException {
     try {
-      compiler.compile(files)
-      return files.collect {
-        new File(targetDir, Utils.nameWithExtension(it, ".class"))
-      }
+      compiler.compile(scriptFile)
+      return new File(targetDir, Utils.nameWithExtension(scriptFile, ".class"))
     } catch (Exception e) {
       throw new IOException(e)
     }

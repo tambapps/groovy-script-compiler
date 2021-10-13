@@ -18,21 +18,22 @@ File tempDir = File.createTempDir('groovybe')
 
 
 try {
-  GroovyCompiler compiler = new GroovyCompiler(tempDir)
   GroovyDepsFetcher groovyDepsFetcher = new GroovyDepsFetcher()
-  File classFile = compiler.compile(arguments.scriptFile)[0]
+  // fetch dependencies first. They will constitute the classpath used for compilation
+  List<File> dependencyJar = groovyDepsFetcher.fetch(arguments.version, arguments.subProjects)
+  GroovyCompiler compiler = new GroovyCompiler(tempDir, dependencyJar)
+
+  File classFile = compiler.compile(arguments.scriptFile)
   String className = Utils.nameWithExtension(classFile, '')
   File jarFile = new File(tempDir, "${className}.jar")
   try (ScriptJarOutputStream os = new ScriptJarOutputStream(jarFile, classFile)) {
     os.write()
   }
 
-  List<File> groovyJars = groovyDepsFetcher.fetch(arguments.version, arguments.submodules)
-
   File jarWithDependencies = new File(tempDir, "${className}-with-dependencies.jar")
   try (JarMergingOutputStream os = new JarMergingOutputStream(new FileOutputStream(jarWithDependencies))) {
     os.writeJar(jarFile)
-    for (groovyJar in groovyJars) {
+    for (groovyJar in dependencyJar) {
       os.writeJar(groovyJar)
     }
     os.flush()

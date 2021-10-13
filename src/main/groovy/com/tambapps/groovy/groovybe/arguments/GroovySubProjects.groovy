@@ -1,7 +1,7 @@
 package com.tambapps.groovy.groovybe.arguments
 
 enum GroovySubProjects {
-  ALL('groovy-all'), JSON('groovy-xml'), XML('groovy-json');
+  ALL('groovy-all'), JSON('groovy-json'), XML('groovy-xml');
 
   final String artifactId
 

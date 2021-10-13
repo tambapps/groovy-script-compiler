@@ -13,8 +13,8 @@ class Arguments {
   @CommandLine.Option(names = ['-v', '--version'], description = 'Groovy version to use')
   String version = '3.0.9'
 
-  @CommandLine.Option(names = ['-g', '--groovy-submodule'], description = 'Groovy submodules to include in the jar', split = ',')
-  List<GroovySubProjects> submodules = []
+  @CommandLine.Option(names = ['-s', '--groovy-subprojects'], description = 'Groovy submodules to include in the jar', split = ',')
+  List<GroovySubProjects> subProjects = []
 
   @CommandLine.Option(names = ["-h", "--help"], usageHelp = true, description = "display usage")
   boolean help = false
