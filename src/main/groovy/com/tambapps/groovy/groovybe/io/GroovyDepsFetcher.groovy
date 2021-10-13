@@ -1,6 +1,6 @@
 package com.tambapps.groovy.groovybe.io
 
-import com.tambapps.groovy.groovybe.arguments.GroovySubmodule
+import com.tambapps.groovy.groovybe.arguments.GroovySubProjects
 import com.tambapps.maven.dependency.resolver.DependencyResolver
 import com.tambapps.maven.dependency.resolver.data.DependencyResolvingResult
 import com.tambapps.maven.dependency.resolver.repository.RemoteSavingMavenRepository
@@ -12,10 +12,17 @@ class GroovyDepsFetcher {
   private final DependencyResolver resolver = new DependencyResolver(repository)
 
   // for now it only support groovy 3.X
-  // TODO make it handle different versions
-  List<File> fetch(String groovyVersion, List<GroovySubmodule> submodules) {
-    // TODO handle groovy submodules
-    DependencyResolvingResult result = resolver.resolve('org.codehaus.groovy', 'groovy', groovyVersion)
+  // TODO for groovy 4.X groupId has changed. handle that
+  List<File> fetch(String groovyVersion, List<GroovySubProjects> submodules) {
+    if (submodules.contains(GroovySubProjects.ALL)) {
+      resolver.resolve('org.codehaus.groovy', GroovySubProjects.ALL.artifactId, groovyVersion)
+    } else {
+      resolver.resolve('org.codehaus.groovy', 'groovy', groovyVersion)
+      for (submodule in submodules) {
+        resolver.resolve('org.codehaus.groovy', submodule.artifactId, groovyVersion)
+      }
+    }
+    DependencyResolvingResult result = resolver.results
     return result.getArtifacts(new FirstVersionFoundConflictResolver()).collect(repository.&getJarFile)
   }
 }
