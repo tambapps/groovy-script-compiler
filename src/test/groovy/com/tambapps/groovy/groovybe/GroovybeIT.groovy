@@ -21,6 +21,19 @@ class GroovybeIT {
 
     outputJar.delete()
   }
+
+  @Test
+  void testBuildAppimage() {
+    File scriptFile = getResourceFile("/HelloWorld.groovy")
+    Groovybe.main(new String[] {scriptFile.path, '-t', 'appimage'})
+    File outputDir = new File(Utils.CURRENT_DIRECTORY, "HelloWorld")
+    assertTrue(outputDir.exists())
+    File executableFile = new File(outputDir, "/bin/HelloWorld")
+    assertEquals("Hello World", execute(executableFile.absolutePath))
+
+    outputDir.deleteDir()
+  }
+
   @Test
   void testBuildJarJson() {
     File scriptFile = getResourceFile("/HelloWorldJson.groovy")
@@ -33,7 +46,11 @@ class GroovybeIT {
   }
 
   private static String java(File jarFile) {
-    Process process = "$JAVA_FILE -jar $jarFile".execute()
+    return execute("$JAVA_FILE -jar $jarFile")
+  }
+
+  private static String execute(String command) {
+    Process process = command.execute()
     StringBuilder builder = new StringBuilder()
     process.consumeProcessOutput(builder, builder)
     process.waitFor()
