@@ -13,9 +13,9 @@ class GroovyDepsFetcher {
 
   // for now it only support groovy 3.X
   // TODO make it handle different versions
-  List<File> fetch(List<GroovySubmodule> submodules) {
+  List<File> fetch(String groovyVersion, List<GroovySubmodule> submodules) {
     // TODO handle groovy submodules
-    DependencyResolvingResult result = resolver.resolve('org.codehaus.groovy', 'groovy', '3.0.9')
+    DependencyResolvingResult result = resolver.resolve('org.codehaus.groovy', 'groovy', groovyVersion)
     return result.getArtifacts(new FirstVersionFoundConflictResolver()).collect(repository.&getJarFile)
   }
 }

@@ -3,13 +3,17 @@ package com.tambapps.groovy.groovybe.arguments
 import picocli.CommandLine
 
 class Arguments {
-  @CommandLine.Option(names = ['-o', '--output'], description = 'Output')
-  OutputType outputType = OutputType.JAR
 
   @CommandLine.Parameters(paramLabel = "SCRIPTFILE", description = 'The script file to compile')
   File scriptFile
 
-  @CommandLine.Option(names = ['-g', '--groovy-submodule'], description = 'Output', split = ',')
+  @CommandLine.Option(names = ['-o', '--output'], description = 'Output')
+  OutputType outputType = OutputType.JAR
+
+  @CommandLine.Option(names = ['-v', '--version'], description = 'Groovy version to use')
+  String version = '3.0.9'
+
+  @CommandLine.Option(names = ['-g', '--groovy-submodule'], description = 'Groovy submodules to include in the jar', split = ',')
   List<GroovySubmodule> submodules = []
 
   @CommandLine.Option(names = ["-h", "--help"], usageHelp = true, description = "display usage")
