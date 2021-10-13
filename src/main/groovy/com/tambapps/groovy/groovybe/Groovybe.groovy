@@ -27,7 +27,7 @@ try {
     os.write()
   }
 
-  List<File> groovyJars = groovyDepsFetcher.fetch()
+  List<File> groovyJars = groovyDepsFetcher.fetch(arguments.submodules)
 
   File jarWithDependencies = new File(tempDir, "${className}-with-dependencies.jar")
   try (JarMergingOutputStream os = new JarMergingOutputStream(new FileOutputStream(jarWithDependencies))) {

@@ -9,6 +9,9 @@ class Arguments {
   @CommandLine.Parameters(paramLabel = "SCRIPTFILE", description = 'The script file to compile')
   File scriptFile
 
+  @CommandLine.Option(names = ['-g', '--groovy-submodule'], description = 'Output', split = ',')
+  List<GroovySubmodule> submodules = []
+
   @CommandLine.Option(names = ["-h", "--help"], usageHelp = true, description = "display usage")
   boolean help = false
 
