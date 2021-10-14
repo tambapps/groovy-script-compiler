@@ -1,5 +1,6 @@
 package com.tambapps.groovy.groovybe.arguments
 
+import com.tambapps.groovy.groovybe.util.Utils
 import picocli.CommandLine
 
 class Arguments {
@@ -15,6 +16,9 @@ class Arguments {
 
   @CommandLine.Option(names = ['-j', '--jpackage-path'], description = "Path of jpackage. Only useful for 'appimage' type")
   File jpackageFile = null
+
+  @CommandLine.Option(names = ['-o', '--output-dir'], description = "Folder in which to put output file")
+  File outputDir = Utils.CURRENT_DIRECTORY
 
   @CommandLine.Option(names = ['-s', '--groovy-subprojects'], description = 'Comma-separated list of Groovy subprojects to include in the jar', split = ',')
   List<GroovySubProjects> subProjects = []

@@ -16,7 +16,6 @@ if (!arguments) {
 
 File tempDir = File.createTempDir('groovybe')
 
-
 try {
   GroovyDepsFetcher groovyDepsFetcher = new GroovyDepsFetcher()
   // fetch dependencies first. They will constitute the classpath used for compilation
@@ -41,7 +40,7 @@ try {
   }
   switch (arguments.outputType) {
     case OutputType.JAR:
-      jarWithDependencies.renameTo(new File(Utils.CURRENT_DIRECTORY, jarWithDependencies.name))
+      jarWithDependencies.renameTo(new File(arguments.outputDir, jarWithDependencies.name))
       break
     case OutputType.APPIMAGE:
       Jpackage jpackage = arguments.jpackageFile != null ? new Jpackage(arguments.jpackageFile)
@@ -50,7 +49,7 @@ try {
       File jpackageInputDir = new File(tempDir, "jpackage_input")
       jpackageInputDir.mkdir()
       jarWithDependencies.renameTo(new File(jpackageInputDir, jarWithDependencies.name))
-      jpackage.run(jpackageInputDir, jarWithDependencies, className)
+      jpackage.run(jpackageInputDir, jarWithDependencies, className, arguments.outputDir)
       break
   }
 } finally {

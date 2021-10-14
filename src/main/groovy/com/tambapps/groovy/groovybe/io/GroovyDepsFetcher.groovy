@@ -7,6 +7,7 @@ import com.tambapps.maven.dependency.resolver.version.FirstVersionFoundConflictR
 
 class GroovyDepsFetcher {
 
+  // TODO handle case for people that doesn't have Maven. Be careful, we still need to save the files
   private final RemoteSavingMavenRepository repository = new RemoteSavingMavenRepository()
   private final DependencyResolver resolver = new DependencyResolver(repository)
 

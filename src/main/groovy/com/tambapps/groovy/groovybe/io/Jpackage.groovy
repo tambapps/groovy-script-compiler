@@ -16,14 +16,15 @@ class Jpackage {
     this.jpackageFile = jpackageFile
   }
 
-  void run(File inputDir, File jarFile, String className) {
+  void run(File inputDir, File jarFile, String className, File outputDir) {
     List<String> command = [
         jpackageFile.absolutePath,
         '--input', inputDir.absolutePath,
         '--main-jar', jarFile.name,
         '--name', className,
         '--main-class', className,
-        '--type', 'app-image'
+        '--type', 'app-image',
+        '--dest', outputDir.absolutePath
     ]
 
     Process process = command.join(' ').execute()
