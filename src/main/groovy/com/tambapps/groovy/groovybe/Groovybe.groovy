@@ -30,7 +30,7 @@ try {
     os.write()
   }
 
-  File jarWithDependencies = new File(tempDir, "${className}-with-dependencies.jar")
+  File jarWithDependencies = new File(tempDir, "${className}-exec.jar")
   try (JarMergingOutputStream os = new JarMergingOutputStream(new FileOutputStream(jarWithDependencies))) {
     os.writeJar(jarFile)
     for (dependencyJar in dependencyJars) {

@@ -15,7 +15,7 @@ class GroovybeIT {
   void testBuildJar() {
     File scriptFile = getResourceFile("/HelloWorld.groovy")
     Groovybe.main(new String[] {scriptFile.path})
-    File outputJar = new File(Utils.CURRENT_DIRECTORY, "HelloWorld-with-dependencies.jar")
+    File outputJar = new File(Utils.CURRENT_DIRECTORY, "HelloWorld-exec.jar")
     assertTrue(outputJar.exists())
     assertEquals("Hello World", java(outputJar))
 
@@ -38,7 +38,7 @@ class GroovybeIT {
   void testBuildJarJson() {
     File scriptFile = getResourceFile("/HelloWorldJson.groovy")
     Groovybe.main(new String[] {scriptFile.path, '-s', 'json'})
-    File outputJar = new File(Utils.CURRENT_DIRECTORY, "HelloWorldJson-with-dependencies.jar")
+    File outputJar = new File(Utils.CURRENT_DIRECTORY, "HelloWorldJson-exec.jar")
     assertTrue(outputJar.exists())
     assertEquals("Pierre", java(outputJar))
 
@@ -50,7 +50,7 @@ class GroovybeIT {
     // get hyperpoet jar from maven repository
     File additionalJarDep = new File(Utils.HOME_DIRECTORY, '/.m2/repository/com/tambapps/http/hyperpoet/1.1.0-SNAPSHOT/hyperpoet-1.1.0-SNAPSHOT.jar')
     Groovybe.main(new String[] {scriptFile.path, '-s', 'json', '-a', additionalJarDep.absolutePath})
-    File outputJar = new File(Utils.CURRENT_DIRECTORY, "HelloWorldHyperPoet-with-dependencies.jar")
+    File outputJar = new File(Utils.CURRENT_DIRECTORY, "HelloWorldHyperPoet-exec.jar")
     assertTrue(outputJar.exists())
     assertEquals("ContentType", java(outputJar))
 
