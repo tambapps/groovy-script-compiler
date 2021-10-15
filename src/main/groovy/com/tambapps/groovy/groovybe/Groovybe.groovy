@@ -26,8 +26,8 @@ try {
   File classFile = compiler.compile(arguments.scriptFile)
   String className = Utils.nameWithExtension(classFile, '')
   File jarFile = new File(tempDir, "${className}.jar")
-  try (ScriptJarOutputStream os = new ScriptJarOutputStream(jarFile, classFile)) {
-    os.write()
+  try (ScriptJarOutputStream os = new ScriptJarOutputStream(jarFile, className)) {
+    os.writeClass(classFile)
   }
 
   File jarWithDependencies = new File(tempDir, "${className}-exec.jar")
