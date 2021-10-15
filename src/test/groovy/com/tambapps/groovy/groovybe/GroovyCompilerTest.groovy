@@ -12,14 +12,11 @@ class GroovyCompilerTest {
 
   @Test
   void test() throws Exception {
-    GroovyCompiler compiler = new GroovyCompiler(Utils.CURRENT_DIRECTORY)
+    GroovyCompiler compiler = new GroovyCompiler(Utils.CURRENT_DIRECTORY, [])
     File file = getResourceFile("/HelloWorld.groovy")
 
-    List<File> compiledFiles = compiler.compile(file)
-    System.out.println(compiledFiles)
-    for (File compiledFile : compiledFiles) {
-      assertTrue(compiledFile.exists())
-      assertTrue(compiledFile.delete())
-    }
+    File compiledFile = compiler.compile(file)
+    assertTrue(compiledFile.exists())
+    assertTrue(compiledFile.delete())
   }
 }
