@@ -18,10 +18,6 @@ class SourceDependencyGrabber {
     return transform(text.readLines())
   }
 
-  String transform(File sourceFile) {
-   return transform(sourceFile.readLines())
-  }
-
   String transform(List<String> lines) {
     return lines.findAll(this.&detectGrabLine).join('\n')
   }

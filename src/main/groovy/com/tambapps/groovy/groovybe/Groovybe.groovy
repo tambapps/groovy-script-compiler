@@ -7,7 +7,6 @@ import com.tambapps.groovy.groovybe.io.GroovyCompiler
 import com.tambapps.groovy.groovybe.io.GroovyDepsFetcher
 import com.tambapps.groovy.groovybe.io.Jpackage
 import com.tambapps.groovy.groovybe.io.stream.JarMergingOutputStream
-import com.tambapps.groovy.groovybe.io.stream.ScriptJarOutputStream
 import com.tambapps.groovy.groovybe.util.Utils
 
 Arguments arguments = Arguments.parseArgs(args)
@@ -21,29 +20,31 @@ try {
   GroovyDepsFetcher groovyDepsFetcher = new GroovyDepsFetcher()
   SourceDependencyGrabber sourceDependencyGrabber = new SourceDependencyGrabber()
 
+  // extract @Grab artifacts if any
   File transformedScriptFile = new File(tempDir, arguments.scriptFile.name)
-  transformedScriptFile.text = sourceDependencyGrabber.transform(arguments.scriptFile)
+  transformedScriptFile.text = sourceDependencyGrabber.transform(arguments.scriptFile.readLines())
 
   // Fetch dependencies. They will constitute the classpath used for compilation
-  List<File> dependencyJars = arguments.additionalJars +
-      groovyDepsFetcher.fetch(arguments.version, arguments.subProjects, sourceDependencyGrabber.grabbedArtifacts)
-  GroovyCompiler compiler = new GroovyCompiler(tempDir, dependencyJars)
+  List<File> dependencyJars =
+      groovyDepsFetcher.fetch(arguments.version, arguments.subProjects,
+          sourceDependencyGrabber.grabbedArtifacts) + arguments.additionalJars
 
+  // compile class
+  GroovyCompiler compiler = new GroovyCompiler(tempDir, dependencyJars)
   File classFile = compiler.compile(transformedScriptFile)
   String className = Utils.nameWithExtension(classFile, '')
-  File jarFile = new File(tempDir, "${className}.jar")
-  try (ScriptJarOutputStream os = new ScriptJarOutputStream(jarFile, className)) {
-    os.writeClass(classFile)
-  }
 
+  // compile executable jar
   File jarWithDependencies = new File(tempDir, "${className}-exec.jar")
-  try (JarMergingOutputStream os = new JarMergingOutputStream(new FileOutputStream(jarWithDependencies))) {
-    os.writeJar(jarFile)
+  try (JarMergingOutputStream os = new JarMergingOutputStream(new FileOutputStream(jarWithDependencies), className)) {
+    os.writeClass(classFile)
     for (dependencyJar in dependencyJars) {
       os.writeJar(dependencyJar)
     }
     os.flush()
   }
+
+  // now export to provided format
   switch (arguments.outputType) {
     case OutputType.JAR:
       jarWithDependencies.renameTo(new File(arguments.outputDir, jarWithDependencies.name))
