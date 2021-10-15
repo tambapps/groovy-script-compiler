@@ -9,6 +9,8 @@ import com.tambapps.groovy.groovybe.io.Jpackage
 import com.tambapps.groovy.groovybe.io.stream.JarMergingOutputStream
 import com.tambapps.groovy.groovybe.util.Utils
 
+import java.nio.file.Path
+
 Arguments arguments = Arguments.parseArgs(args)
 if (!arguments) {
   return
@@ -44,16 +46,27 @@ try {
     os.flush()
   }
 
+  File outputFile
   // now export to provided format
   switch (arguments.outputType) {
     case OutputType.JAR:
-      jarWithDependencies.renameTo(new File(arguments.outputDir, jarWithDependencies.name))
+      outputFile = new File(arguments.outputDir, jarWithDependencies.name)
+      jarWithDependencies.renameTo(outputFile)
       break
     case OutputType.APPIMAGE:
       Jpackage jpackage = arguments.jpackageFile != null ? new Jpackage(arguments.jpackageFile)
           : Jpackage.newInstance()
-      jpackage.run(tempDir, jarWithDependencies, className, arguments.outputDir)
+      outputFile = jpackage.run(tempDir, jarWithDependencies, className, arguments.outputDir)
       break
+    default:
+      return
+  }
+
+  Path normalizedPath = outputFile.toPath().toAbsolutePath().normalize()
+  if (outputFile.directory) {
+    println "Files were generated in $normalizedPath"
+  } else {
+    println "$normalizedPath was generated"
   }
 } finally {
   // cleaning

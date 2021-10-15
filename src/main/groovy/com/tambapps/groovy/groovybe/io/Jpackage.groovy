@@ -16,7 +16,7 @@ class Jpackage {
     this.jpackageFile = jpackageFile
   }
 
-  void run(File tempDir, File jarFile, String className, File outputDir) {
+  File run(File tempDir, File jarFile, String className, File outputDir) {
     File inputDir = makeInputDir(tempDir, jarFile)
     List<String> command = [
         jpackageFile.absolutePath,
@@ -33,6 +33,8 @@ class Jpackage {
     process.consumeProcessOutput(out, out)
     process.waitFor()
     println(out)
+    // the files are generated in a directory named $className
+    return new File(outputDir, className)
   }
 
   static Jpackage newInstance() {
