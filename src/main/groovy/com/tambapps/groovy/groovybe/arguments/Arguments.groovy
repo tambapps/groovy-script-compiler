@@ -26,6 +26,9 @@ class Arguments {
   @CommandLine.Option(names = ['-a', '--additional-jars'], description = 'Comma-separated list of Additional jars. E.g. if your script use a non Groovy library, it would be the jar of the library', split = ',')
   List<File> additionalJars = []
 
+  @CommandLine.Option(names = ["-d", "--debug"], description = "Display more logs")
+  boolean debug = false
+
   @CommandLine.Option(names = ["-h", "--help"], usageHelp = true, description = "display usage")
   boolean help = false
 

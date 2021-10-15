@@ -31,8 +31,11 @@ class Jpackage {
     Process process = command.join(' ').execute()
     def out = new StringBuilder()
     process.consumeProcessOutput(out, out)
-    process.waitFor()
+    int outputCode = process.waitFor()
     println(out)
+    if (outputCode != 0) {
+      throw new IOException("jpackage terminated with an error")
+    }
     // the files are generated in a directory named $className
     return new File(outputDir, className)
   }

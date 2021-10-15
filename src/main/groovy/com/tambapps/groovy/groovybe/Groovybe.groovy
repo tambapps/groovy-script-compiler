@@ -8,6 +8,7 @@ import com.tambapps.groovy.groovybe.io.GroovyDepsFetcher
 import com.tambapps.groovy.groovybe.io.Jpackage
 import com.tambapps.groovy.groovybe.io.stream.JarMergingOutputStream
 import com.tambapps.groovy.groovybe.util.Utils
+import com.tambapps.maven.dependency.resolver.data.Artifact
 
 import java.nio.file.Path
 
@@ -15,6 +16,7 @@ Arguments arguments = Arguments.parseArgs(args)
 if (!arguments) {
   return
 }
+setProperty('DEBUG', arguments.debug)
 
 File tempDir = File.createTempDir('groovybe')
 
@@ -26,17 +28,26 @@ try {
   File transformedScriptFile = new File(tempDir, arguments.scriptFile.name)
   transformedScriptFile.text = sourceDependencyGrabber.transform(arguments.scriptFile.readLines())
 
+  if (getProperty('DEBUG') && !sourceDependencyGrabber.grabbedArtifacts.isEmpty()) {
+    debugPrintln("found @Grab artifacts" +
+        sourceDependencyGrabber.grabbedArtifacts.collect(Artifact.&toArtifactString))
+    debugPrintln("ignored @Grab annotation(s), the artifact dependencies will be included in the jar")
+  }
+
   // Fetch dependencies. They will constitute the classpath used for compilation
-  List<File> dependencyJars =
-      groovyDepsFetcher.fetch(arguments.version, arguments.subProjects,
-          sourceDependencyGrabber.grabbedArtifacts) + arguments.additionalJars
+  debugPrintln('retrieving dependencies')
+  List<File> fetchedDependencyJars = groovyDepsFetcher.fetch(arguments.version, arguments.subProjects,
+      sourceDependencyGrabber.grabbedArtifacts)
+  List<File> dependencyJars = fetchedDependencyJars + arguments.additionalJars
 
   // compile class
+  debugPrintln('compiling script')
   GroovyCompiler compiler = new GroovyCompiler(tempDir, dependencyJars)
   File classFile = compiler.compile(transformedScriptFile)
   String className = Utils.nameWithExtension(classFile, '')
 
   // compile executable jar
+  debugPrintln('generating JAR')
   File jarWithDependencies = new File(tempDir, "${className}-exec.jar")
   try (JarMergingOutputStream os = new JarMergingOutputStream(new FileOutputStream(jarWithDependencies), className)) {
     os.writeClass(classFile)
@@ -54,6 +65,7 @@ try {
       jarWithDependencies.renameTo(outputFile)
       break
     case OutputType.APPIMAGE:
+      debugPrintln('running jpackage')
       Jpackage jpackage = arguments.jpackageFile != null ? new Jpackage(arguments.jpackageFile)
           : Jpackage.newInstance()
       outputFile = jpackage.run(tempDir, jarWithDependencies, className, arguments.outputDir)
@@ -71,4 +83,10 @@ try {
 } finally {
   // cleaning
   tempDir.deleteDir()
+}
+
+void debugPrintln(Object value) {
+  if (getProperty('DEBUG')) {
+    println(value)
+  }
 }
