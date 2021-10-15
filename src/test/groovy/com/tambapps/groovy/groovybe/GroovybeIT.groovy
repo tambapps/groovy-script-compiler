@@ -1,6 +1,7 @@
 package com.tambapps.groovy.groovybe
 
 import com.tambapps.groovy.groovybe.util.Utils
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
 import static TestUtils.getResourceFile
@@ -11,61 +12,67 @@ class GroovybeIT {
 
   private static final File JAVA_FILE = findJava()
 
+  // can also be a directory
+  File outputFile
+
+  @AfterEach
+  void clean() {
+    if (outputFile != null && outputFile.exists()) {
+      if (outputFile.directory) {
+        outputFile.deleteDir()
+      } else {
+        outputFile.delete()
+      }
+    }
+    outputFile = null
+  }
+
   @Test
   void testBuildJar() {
     File scriptFile = getResourceFile("/HelloWorld.groovy")
     Groovybe.main(new String[] {scriptFile.path})
-    File outputJar = new File(Utils.CURRENT_DIRECTORY, "HelloWorld-exec.jar")
-    assertTrue(outputJar.exists())
-    assertEquals("Hello World", java(outputJar))
-
-    outputJar.delete()
+    outputFile = new File(Utils.CURRENT_DIRECTORY, "HelloWorld-exec.jar")
+    assertTrue(outputFile.exists())
+    assertEquals("Hello World", java(outputFile))
   }
 
   @Test
   void testBuildAppimage() {
     File scriptFile = getResourceFile("/HelloWorld.groovy")
     Groovybe.main(new String[] {scriptFile.path, '-t', 'appimage'})
-    File outputDir = new File(Utils.CURRENT_DIRECTORY, "HelloWorld")
-    assertTrue(outputDir.exists())
-    File executableFile = new File(outputDir, "/bin/HelloWorld")
+    outputFile = new File(Utils.CURRENT_DIRECTORY, "HelloWorld")
+    assertTrue(outputFile.exists())
+    File executableFile = new File(outputFile, "/bin/HelloWorld")
     assertEquals("Hello World", execute(executableFile.absolutePath))
-
-    outputDir.deleteDir()
   }
 
   @Test
   void testBuildJarJson() {
     File scriptFile = getResourceFile("/HelloWorldJson.groovy")
     Groovybe.main(new String[] {scriptFile.path, '-s', 'json'})
-    File outputJar = new File(Utils.CURRENT_DIRECTORY, "HelloWorldJson-exec.jar")
-    assertTrue(outputJar.exists())
-    assertEquals("Pierre", java(outputJar))
-
-    outputJar.delete()
+    outputFile = new File(Utils.CURRENT_DIRECTORY, "HelloWorldJson-exec.jar")
+    assertTrue(outputFile.exists())
+    assertEquals("Pierre", java(outputFile))
   }
 
   @Test
   void testBuildJarGrab() {
     File scriptFile = getResourceFile("/HelloWorldGrab.groovy")
     Groovybe.main(new String[] {scriptFile.path})
-    File outputJar = new File(Utils.CURRENT_DIRECTORY, "HelloWorldGrab-exec.jar")
-    assertTrue(outputJar.exists())
-    assertEquals("JdbcTemplate", java(outputJar))
-
-    outputJar.delete()
+    outputFile = new File(Utils.CURRENT_DIRECTORY, "HelloWorldGrab-exec.jar")
+    assertTrue(outputFile.exists())
+    assertEquals("JdbcTemplate", java(outputFile))
   }
+
   @Test
   void testBuildJarJsonWithAdditionalDependency() {
     File scriptFile = getResourceFile("/HelloWorldHyperPoet.groovy")
     // get hyperpoet jar from maven repository
     File additionalJarDep = new File(Utils.HOME_DIRECTORY, '/.m2/repository/com/tambapps/http/hyperpoet/1.1.0-SNAPSHOT/hyperpoet-1.1.0-SNAPSHOT.jar')
     Groovybe.main(new String[] {scriptFile.path, '-s', 'json', '-a', additionalJarDep.absolutePath})
-    File outputJar = new File(Utils.CURRENT_DIRECTORY, "HelloWorldHyperPoet-exec.jar")
-    assertTrue(outputJar.exists())
-    assertEquals("ContentType", java(outputJar))
-
-    outputJar.delete()
+    outputFile = new File(Utils.CURRENT_DIRECTORY, "HelloWorldHyperPoet-exec.jar")
+    assertTrue(outputFile.exists())
+    assertEquals("ContentType", java(outputFile))
   }
 
   private static String java(File jarFile) {
