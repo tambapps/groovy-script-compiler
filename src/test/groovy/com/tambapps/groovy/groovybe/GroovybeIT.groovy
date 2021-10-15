@@ -44,6 +44,17 @@ class GroovybeIT {
 
     outputJar.delete()
   }
+
+  @Test
+  void testBuildJarGrab() {
+    File scriptFile = getResourceFile("/HelloWorldGrab.groovy")
+    Groovybe.main(new String[] {scriptFile.path})
+    File outputJar = new File(Utils.CURRENT_DIRECTORY, "HelloWorldGrab-exec.jar")
+    assertTrue(outputJar.exists())
+    assertEquals("JdbcTemplate", java(outputJar))
+
+    outputJar.delete()
+  }
   @Test
   void testBuildJarJsonWithAdditionalDependency() {
     File scriptFile = getResourceFile("/HelloWorldHyperPoet.groovy")
