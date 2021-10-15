@@ -16,7 +16,8 @@ class Jpackage {
     this.jpackageFile = jpackageFile
   }
 
-  void run(File inputDir, File jarFile, String className, File outputDir) {
+  void run(File tempDir, File jarFile, String className, File outputDir) {
+    File inputDir = makeInputDir(tempDir, jarFile)
     List<String> command = [
         jpackageFile.absolutePath,
         '--input', inputDir.absolutePath,
@@ -55,6 +56,14 @@ class Jpackage {
     }
 
     throw new JpackageNotFoundException()
+  }
+
+  private static File makeInputDir(File tempDir, File jarFile) {
+    // dir containing all files that will be packaged (should be just the fat jar)
+    File jpackageInputDir = new File(tempDir, "jpackage_input")
+    jpackageInputDir.mkdir()
+    jarFile.renameTo(new File(jpackageInputDir, jarFile.name))
+    return jpackageInputDir
   }
 
   private static File findFromJdksPath(File jdksPath) {
