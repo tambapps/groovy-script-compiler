@@ -11,14 +11,20 @@ class GroovyCompiler {
   // this is the class used by groovyc
   private final FileSystemCompiler compiler
   private final File targetDir
+  private final boolean compileStatic
 
   GroovyCompiler(File targetDir, List<File> deps) throws IOException {
+    this(targetDir, deps, false)
+  }
+  GroovyCompiler(File targetDir, List<File> deps, boolean compileStatic) throws IOException {
     this.targetDir = targetDir
+    this.compileStatic = compileStatic
     CompilerConfiguration configuration = new FileSystemCompiler.CompilationOptions().tap {
       // private properties, but groovy magic do the extra-work for me
       it.targetDir = targetDir
       printStack = true
       classpath = deps.collect { it.absolutePath }.join(File.pathSeparator)
+      it.compileStatic = compileStatic
     }.toCompilerConfiguration()
     // hack for groovy native-image. Whole explanation at TODO
     configuration.pluginFactory = new CustomAntlr4PluginFactory()

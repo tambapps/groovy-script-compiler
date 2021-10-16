@@ -29,15 +29,7 @@ try {
 
   // extract @Grab artifacts if any
   File transformedScriptFile = new File(tempDir, arguments.scriptFile.name)
-  String className = Utils.nameWithExtension(arguments.scriptFile.name, '')
-
-  String transformedText = sourceDependencyGrabber.transform(arguments.scriptFile.readLines())
-  if (arguments.outputType == OutputType.NATIVE_BINARY) {
-    // hack for native-image. long story explained in Utils
-    // TODO it wouldn't work if script contains imports
-    transformedText = Utils.applyScriptTemplate(className, transformedText)
-  }
-  transformedScriptFile.text = transformedText
+  transformedScriptFile.text = sourceDependencyGrabber.transform(arguments.scriptFile.readLines())
 
   if (Utils.debug && !sourceDependencyGrabber.grabbedArtifacts.isEmpty()) {
     debugPrintln("found @Grab artifacts" +
@@ -56,11 +48,12 @@ try {
   if (Utils.debug) {
     FileSystemCompiler.displayVersion(new FlushPrintWriter(System.out))
   }
-  GroovyCompiler compiler = new GroovyCompiler(tempDir, dependencyJars)
+  GroovyCompiler compiler = new GroovyCompiler(tempDir, dependencyJars, arguments.outputType == OutputType.NATIVE_BINARY)
   File classFile = compiler.compile(transformedScriptFile)
 
   // compile executable jar
   debugPrintln('generating JAR')
+  String className = Utils.nameWithExtension(arguments.scriptFile.name, '')
   File jarWithDependencies = new File(tempDir, "${className}-exec.jar")
   try (JarMergingOutputStream os = new JarMergingOutputStream(new FileOutputStream(jarWithDependencies), className)) {
     os.writeClass(classFile)
