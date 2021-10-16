@@ -9,13 +9,12 @@ native binary executable using [native-image](https://www.graalvm.org/reference-
 ## Why this project
 
 At first, I wanted to make a tool that converts a groovy script into a binary executable. 
-I wanted to have
-only one compiled file to execute a groovy script fastly. You could put `#!/user/bin/env groovy` at the 
+I wanted to have only one compiled file to execute a groovy script fastly. You could put `#!/user/bin/env groovy` at the 
 first line of your script and then make your script executable (`chmod u+x MyScript.groovy`) but running it
 would still be a little slow since groovy will have to compile your script everytime you run it.
-To generate an executable file, I first looked at
-Java `jpackage` that generates appimage, but I saw that it generates other files along with the executable, and if you
-delete these other files, it doesn't work anymore.
+
+To generate an executable file, I first looked at Java `jpackage` that generates appimage, but I saw 
+that it generates other files along with the executable, and if you delete these other files, it doesn't work anymore.
 
 Then I saw GraalVM `native-image`, but its capabilities with Groovy are limited (e.g. you can't use Groovy dynamic features).
 
