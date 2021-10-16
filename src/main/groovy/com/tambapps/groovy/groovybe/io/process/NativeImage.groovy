@@ -33,6 +33,7 @@ class NativeImage {
     if (generatedFile != outputFile) {
       generatedFile.renameTo(outputFile)
     }
+    new File(Utils.CURRENT_DIRECTORY, className + ".build_artifacts.txt").delete()
     return outputFile
   }
 }
