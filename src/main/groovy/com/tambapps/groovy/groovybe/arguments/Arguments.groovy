@@ -10,10 +10,10 @@ class Arguments {
   @CommandLine.Parameters(paramLabel = "SCRIPTFILE", description = 'The script file to compile', arity = '1')
   File scriptFile
 
-  @CommandLine.Option(names = ['-t', '--type'], description = 'The type of output to create', converter = OutputTypeConverter)
+  @CommandLine.Option(names = ['-t', '--type'], description = 'The type of output to create', converter = OutputTypeConverter, showDefaultValue = CommandLine.Help.Visibility.ALWAYS)
   OutputType outputType = OutputType.JAR
 
-  @CommandLine.Option(names = ['-v', '--version'], description = 'Groovy version to use')
+  @CommandLine.Option(names = ['-v', '--version'], description = 'Groovy version to use', showDefaultValue = CommandLine.Help.Visibility.ALWAYS)
   String version = '3.0.9'
 
   @CommandLine.Option(names = ['-j', '--jpackage-path'], description = "Path of jpackage. Only useful for 'appimage' type")
@@ -22,7 +22,7 @@ class Arguments {
   @CommandLine.Option(names = ['-n', '--native-image-path'], description = "Path of native-image (graalvm). Only useful for 'native-binary' type")
   File nativeImageFile = null
 
-  @CommandLine.Option(names = ['-o', '--output-dir'], description = "Folder in which to put output file")
+  @CommandLine.Option(names = ['-o', '--output-dir'], description = "Folder in which to put output file. Defaults to current directory")
   File outputDir = Utils.CURRENT_DIRECTORY
 
   @CommandLine.Option(names = ['-s', '--groovy-subprojects'], description = 'Comma-separated list of Groovy subprojects to include in the jar', split = ',', converter = GroovySubProjectConverter)
@@ -48,7 +48,9 @@ class Arguments {
       return null
     }
     if (arguments.help) {
-      commandLine.usage(new PrintWriter(System.out))
+      def writer = new PrintWriter(System.out)
+      commandLine.usage(writer)
+      writer.flush()
       return null
     }
     if (arguments.jpackageFile != null && !arguments.jpackageFile.exists()) {

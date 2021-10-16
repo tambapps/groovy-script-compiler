@@ -8,10 +8,8 @@ import com.tambapps.groovy.groovybe.io.GroovyDepsFetcher
 import com.tambapps.groovy.groovybe.io.process.Jpackage
 import com.tambapps.groovy.groovybe.io.process.NativeImage
 import com.tambapps.groovy.groovybe.io.stream.JarMergingOutputStream
-import com.tambapps.groovy.groovybe.util.FlushPrintWriter
 import com.tambapps.groovy.groovybe.util.Utils
 import com.tambapps.maven.dependency.resolver.data.Artifact
-import org.codehaus.groovy.tools.FileSystemCompiler
 
 import java.nio.file.Path
 
@@ -44,10 +42,7 @@ try {
   List<File> dependencyJars = fetchedDependencyJars + arguments.additionalJars
 
   // compile class
-  debugPrintln('compiling script')
-  if (Utils.debug) {
-    FileSystemCompiler.displayVersion(new FlushPrintWriter(System.out))
-  }
+  debugPrintln('compiling script (Groovy compiler ' + GroovySystem.getVersion() + ')')
   GroovyCompiler compiler = new GroovyCompiler(tempDir, dependencyJars, arguments.outputType == OutputType.NATIVE_BINARY)
   File classFile = compiler.compile(transformedScriptFile)
 
