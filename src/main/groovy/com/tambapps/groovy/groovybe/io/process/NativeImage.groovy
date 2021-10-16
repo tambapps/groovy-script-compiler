@@ -21,9 +21,9 @@ class NativeImage {
         '--no-fallback',
         '--allow-incomplete-classpath',
         '--report-unsupported-elements-at-runtime',
-        '--initialize-at-build-time',
+        '--initialize-at-build-time', // --initialize-at-build-time without arguments has been deprecated and will be removed in GraalVM 22.0.
         '--initialize-at-run-time=org.codehaus.groovy.control.XStreamUtils,groovy.grape.GrapeIvy',
-        '--no-server', // may be deprecated?,
+        '--no-server', // Warning: Ignoring server-mode native-image argument --no-server
         className
     ]
 
