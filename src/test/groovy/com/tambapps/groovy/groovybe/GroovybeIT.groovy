@@ -47,6 +47,16 @@ class GroovybeIT {
   }
 
   @Test
+  void testBuildNativeBinary() {
+    File scriptFile = getResourceFile("/HelloWorld.groovy")
+    Groovybe.main(new String[] {scriptFile.path, '-t', 'native_binary'})
+    outputFile = new File(Utils.CURRENT_DIRECTORY, "HelloWorld")
+    assertTrue(outputFile.exists())
+    assertTrue(outputFile.canExecute())
+    assertEquals("Hello World", execute(outputFile.absolutePath))
+  }
+
+  @Test
   void testBuildJarJson() {
     File scriptFile = getResourceFile("/HelloWorldJson.groovy")
     Groovybe.main(new String[] {scriptFile.path, '-s', 'json'})

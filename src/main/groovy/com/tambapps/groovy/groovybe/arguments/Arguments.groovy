@@ -17,6 +17,9 @@ class Arguments {
   @CommandLine.Option(names = ['-j', '--jpackage-path'], description = "Path of jpackage. Only useful for 'appimage' type")
   File jpackageFile = null
 
+  @CommandLine.Option(names = ['-n', '--native-image-path'], description = "Path of native-image (graalvm). Only useful for 'native-binary' type")
+  File nativeImageFile = null
+
   @CommandLine.Option(names = ['-o', '--output-dir'], description = "Folder in which to put output file")
   File outputDir = Utils.CURRENT_DIRECTORY
 

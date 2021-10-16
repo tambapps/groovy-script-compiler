@@ -12,6 +12,7 @@
     <maven.compiler.source>16</maven.compiler.source>
     <maven.compiler.target>16</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <groovy.version>4.0.0-beta-1</groovy.version>
   </properties>
 
   <dependencies>
@@ -23,7 +24,12 @@
     <dependency>
       <groupId>org.apache.groovy</groupId>
       <artifactId>groovy</artifactId>
-      <version>4.0.0-beta-1</version>
+      <version>${groovy.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.groovy</groupId>
+      <artifactId>groovy-templates</artifactId>
+      <version>${groovy.version}</version>
     </dependency>
     <dependency>
       <groupId>com.tambapps.maven</groupId>

@@ -1,6 +1,6 @@
-package com.tambapps.groovy.groovybe.io
+package com.tambapps.groovy.groovybe.io.process
 
-import com.tambapps.groovy.groovybe.exception.JpackageNotFoundException
+import com.tambapps.groovy.groovybe.util.IOUtils
 import com.tambapps.groovy.groovybe.util.Utils
 
 /**
@@ -19,7 +19,7 @@ class Jpackage {
   File run(File tempDir, File jarFile, String className, File outputDir) {
     File inputDir = makeInputDir(tempDir, jarFile)
     List<String> command = [
-        jpackageFile.absolutePath,
+        jpackageFile != null ? jpackageFile.absolutePath : 'jpackage' ,
         '--input', inputDir.absolutePath,
         '--main-jar', jarFile.name,
         '--name', className,
@@ -27,16 +27,9 @@ class Jpackage {
         '--type', 'app-image',
         '--dest', outputDir.absolutePath
     ]
-
-    Process process = command.join(' ').execute()
-    def out = new StringBuilder()
-    process.consumeProcessOutput(out, out)
-    int outputCode = process.waitFor()
-    println(out)
-    if (outputCode != 0) {
-      throw new IOException("jpackage terminated with an error")
-    }
+    IOUtils.runProcess(command, "jpackage terminated with an error")
     // the files are generated in a directory named $className
+    // TODO handle output dir. We'll need to move directory
     return new File(outputDir, className)
   }
 
@@ -60,7 +53,7 @@ class Jpackage {
       return new Jpackage(jpackageFile)
     }
 
-    throw new JpackageNotFoundException()
+    return new Jpackage(jpackageFile)
   }
 
   private static File makeInputDir(File tempDir, File jarFile) {
@@ -93,4 +86,5 @@ class Jpackage {
     }
     return null
   }
+
 }
