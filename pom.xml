@@ -58,7 +58,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.tambapps.groovy.groovyjar.Groovybe</mainClass>
+              <mainClass>com.tambapps.groovy.groovyjar.Groovyjar</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>

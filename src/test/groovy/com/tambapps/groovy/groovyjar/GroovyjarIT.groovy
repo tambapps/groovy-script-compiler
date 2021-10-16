@@ -8,7 +8,7 @@ import static TestUtils.getResourceFile
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertTrue
 
-class GroovybeIT {
+class GroovyjarIT {
 
   private static final File JAVA_FILE = findJava()
 
@@ -30,7 +30,7 @@ class GroovybeIT {
   @Test
   void testBuildJar() {
     File scriptFile = getResourceFile("/HelloWorld.groovy")
-    Groovybe.main(new String[] {scriptFile.path})
+    Groovyjar.main(new String[] {scriptFile.path})
     outputFile = new File(Utils.CURRENT_DIRECTORY, "HelloWorld-exec.jar")
     assertTrue(outputFile.exists())
     assertEquals("Hello World", java(outputFile))
@@ -39,7 +39,7 @@ class GroovybeIT {
   @Test
   void testBuildAppimage() {
     File scriptFile = getResourceFile("/HelloWorld.groovy")
-    Groovybe.main(new String[] {scriptFile.path, '-t', 'appimage'})
+    Groovyjar.main(new String[] {scriptFile.path, '-t', 'appimage'})
     outputFile = new File(Utils.CURRENT_DIRECTORY, "HelloWorld")
     assertTrue(outputFile.exists())
     File executableFile = new File(outputFile, "/bin/HelloWorld")
@@ -49,7 +49,7 @@ class GroovybeIT {
   @Test
   void testBuildNativeBinary() {
     File scriptFile = getResourceFile("/HelloWorld.groovy")
-    Groovybe.main(new String[] {scriptFile.path, '-t', 'native-binary'})
+    Groovyjar.main(new String[] {scriptFile.path, '-t', 'native-binary'})
     outputFile = new File(Utils.CURRENT_DIRECTORY, "HelloWorld")
     assertTrue(outputFile.exists())
     assertTrue(outputFile.canExecute())
@@ -59,7 +59,7 @@ class GroovybeIT {
   @Test
   void testBuildJarJson() {
     File scriptFile = getResourceFile("/HelloWorldJson.groovy")
-    Groovybe.main(new String[] {scriptFile.path, '-s', 'json'})
+    Groovyjar.main(new String[] {scriptFile.path, '-s', 'json'})
     outputFile = new File(Utils.CURRENT_DIRECTORY, "HelloWorldJson-exec.jar")
     assertTrue(outputFile.exists())
     assertEquals("Pierre", java(outputFile))
@@ -68,7 +68,7 @@ class GroovybeIT {
   @Test
   void testBuildJarGrab() {
     File scriptFile = getResourceFile("/HelloWorldGrab.groovy")
-    Groovybe.main(new String[] {scriptFile.path})
+    Groovyjar.main(new String[] {scriptFile.path})
     outputFile = new File(Utils.CURRENT_DIRECTORY, "HelloWorldGrab-exec.jar")
     assertTrue(outputFile.exists())
     assertEquals("JdbcTemplate", java(outputFile))
@@ -79,7 +79,7 @@ class GroovybeIT {
     File scriptFile = getResourceFile("/HelloWorldHyperPoet.groovy")
     // get hyperpoet jar from maven repository
     File additionalJarDep = new File(Utils.HOME_DIRECTORY, '/.m2/repository/com/tambapps/http/hyperpoet/1.1.0-SNAPSHOT/hyperpoet-1.1.0-SNAPSHOT.jar')
-    Groovybe.main(new String[] {scriptFile.path, '-s', 'json', '-a', additionalJarDep.absolutePath})
+    Groovyjar.main(new String[] {scriptFile.path, '-s', 'json', '-a', additionalJarDep.absolutePath})
     outputFile = new File(Utils.CURRENT_DIRECTORY, "HelloWorldHyperPoet-exec.jar")
     assertTrue(outputFile.exists())
     assertEquals("ContentType", java(outputFile))
