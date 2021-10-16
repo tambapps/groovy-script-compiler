@@ -10,7 +10,7 @@ class Arguments {
   @CommandLine.Parameters(paramLabel = "inputFile", description = 'The script file to compile (can be an executable jar instead for appimage and native-binary)', arity = '1')
   File inputFile
 
-  @CommandLine.Option(names = ['-t', '--type'], description = 'The type of output to create', converter = OutputTypeConverter, showDefaultValue = CommandLine.Help.Visibility.ALWAYS)
+  @CommandLine.Option(names = ['-t', '--type'], description = 'The type of output to create. Possible values: [jar, appimage, native-binary]', converter = OutputTypeConverter, showDefaultValue = CommandLine.Help.Visibility.ALWAYS)
   OutputType outputType = OutputType.JAR
 
   @CommandLine.Option(names = ['-v', '--version'], description = 'Groovy version to use', showDefaultValue = CommandLine.Help.Visibility.ALWAYS)
@@ -28,7 +28,7 @@ class Arguments {
   @CommandLine.Option(names = ['-o', '--output-dir'], description = "Folder in which to put output file. Defaults to current directory")
   File outputDir = Utils.CURRENT_DIRECTORY
 
-  @CommandLine.Option(names = ['-s', '--groovy-subprojects'], description = 'Comma-separated list of Groovy subprojects to include in the jar', split = ',', converter = GroovySubProjectConverter)
+  @CommandLine.Option(names = ['-s', '--groovy-subprojects'], description = 'Comma-separated list of Groovy subprojects to include in the jar. Possible values: [all, ant, astbuilder, cli-commons, cli-picocli, console, contracts, datetime, dateutil, docgenerator, ginq, groovydoc, groovysh, jmx, json, jsr223, macro-library, macro, nio, servlet, sql, swing, templates, test-junit5, test, testing, toml, typecheckers, xml, yaml]', split = ',', converter = GroovySubProjectConverter)
   List<GroovySubProject> subProjects = []
 
   @CommandLine.Option(names = ['-a', '--additional-jars'], description = 'Comma-separated list of Additional jars. E.g. if your script use a non Groovy library, it would be the jar of the library', split = ',')
