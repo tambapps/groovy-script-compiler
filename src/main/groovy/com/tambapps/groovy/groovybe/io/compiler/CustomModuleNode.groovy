@@ -59,6 +59,12 @@ class CustomModuleNode extends ModuleNode {
 
     MethodNode existingMain = handleMainMethodIfPresent(methods);
 
+    ctorX(classNode, args(ctorX(ClassHelper.make(Binding.class), args("args"))))
+
+    /*
+      Now we create the psvm method with only one statement (assuming the class name is HelloWorld)
+      new HelloWorld(new Binding(args)).run()
+     */
     classNode.addMethod(
         new MethodNode(
             "main",
@@ -68,10 +74,10 @@ class CustomModuleNode extends ModuleNode {
             ClassNode.EMPTY_ARRAY,
             stmt(
                 callX(
-                    ClassHelper.make(InvokerHelper.class),
-                    "runScript",
-                    args(classX(classNode), varX("args"))
-                )
+                    ctorX(classNode, args(
+                        ctorX(
+                            ClassHelper.make(Binding.class), args(varX("args"))))),
+                    "run")
             )
         )
     );
@@ -82,9 +88,6 @@ class CustomModuleNode extends ModuleNode {
       methodNode.addAnnotations(existingMain.getAnnotations());
     }
     classNode.addMethod(methodNode);
-
-    // TODO delete constructor and do the magic
-    classNode.addConstructor(Opcodes.ACC_PUBLIC, Parameter.EMPTY_ARRAY, ClassNode.EMPTY_ARRAY, new BlockStatement());
 
     Statement stmt = stmt(ctorX(ClassNode.SUPER, args(varX("context"))))
 
