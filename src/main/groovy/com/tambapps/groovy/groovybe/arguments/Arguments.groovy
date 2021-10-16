@@ -1,5 +1,7 @@
 package com.tambapps.groovy.groovybe.arguments
 
+import com.tambapps.groovy.groovybe.arguments.converter.GroovySubProjectConverter
+import com.tambapps.groovy.groovybe.arguments.converter.OutputTypeConverter
 import com.tambapps.groovy.groovybe.util.Utils
 import picocli.CommandLine
 
@@ -8,7 +10,7 @@ class Arguments {
   @CommandLine.Parameters(paramLabel = "SCRIPTFILE", description = 'The script file to compile', arity = '1')
   File scriptFile
 
-  @CommandLine.Option(names = ['-t', '--type'], description = 'The type of output to create')
+  @CommandLine.Option(names = ['-t', '--type'], description = 'The type of output to create', converter = OutputTypeConverter)
   OutputType outputType = OutputType.JAR
 
   @CommandLine.Option(names = ['-v', '--version'], description = 'Groovy version to use')
@@ -23,8 +25,8 @@ class Arguments {
   @CommandLine.Option(names = ['-o', '--output-dir'], description = "Folder in which to put output file")
   File outputDir = Utils.CURRENT_DIRECTORY
 
-  @CommandLine.Option(names = ['-s', '--groovy-subprojects'], description = 'Comma-separated list of Groovy subprojects to include in the jar', split = ',')
-  List<GroovySubProjects> subProjects = []
+  @CommandLine.Option(names = ['-s', '--groovy-subprojects'], description = 'Comma-separated list of Groovy subprojects to include in the jar', split = ',', converter = GroovySubProjectConverter)
+  List<GroovySubProject> subProjects = []
 
   @CommandLine.Option(names = ['-a', '--additional-jars'], description = 'Comma-separated list of Additional jars. E.g. if your script use a non Groovy library, it would be the jar of the library', split = ',')
   List<File> additionalJars = []

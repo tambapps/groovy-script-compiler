@@ -1,6 +1,6 @@
 package com.tambapps.groovy.groovybe.arguments
 
-enum GroovySubProjects {
+enum GroovySubProject {
   ALL('groovy-all'),
   ANT('groovy-ant'),
   ASTBUILDER('groovy-astbuilder'),
@@ -34,7 +34,7 @@ enum GroovySubProjects {
 
   final String artifactId
 
-  GroovySubProjects(String artifactId) {
+  GroovySubProject(String artifactId) {
     this.artifactId = artifactId
   }
 }
