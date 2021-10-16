@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.tambapps.groovy</groupId>
-  <artifactId>groovybe</artifactId>
+  <artifactId>groovyjar</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <properties>
@@ -58,7 +58,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.tambapps.groovy.groovybe.Groovybe</mainClass>
+              <mainClass>com.tambapps.groovy.groovyjar.Groovybe</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
