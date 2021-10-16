@@ -18,4 +18,13 @@ class GroovyCompilerTest {
     assertTrue(compiledFile.exists())
     assertTrue(compiledFile.delete())
   }
+  @Test
+  void testCompileStatic() throws Exception {
+    GroovyCompiler compiler = new GroovyCompiler(Utils.CURRENT_DIRECTORY, [], true)
+    File file = TestUtils.getResourceFile("/HelloWorld.groovy")
+
+    File compiledFile = compiler.compile(file)
+    assertTrue(compiledFile.exists())
+    assertTrue(compiledFile.delete())
+  }
 }
