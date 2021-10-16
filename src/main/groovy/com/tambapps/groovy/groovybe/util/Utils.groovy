@@ -15,4 +15,7 @@ class Utils {
     return fileName.substring(0, fileName.indexOf('.')) + extension
   }
 
+  static List<String> getEnumPossibleValues(Class aClass) {
+    return Arrays.asList(aClass.enumConstants).collect {it.toString().toLowerCase().replaceAll("_", "-") }
+  }
 }

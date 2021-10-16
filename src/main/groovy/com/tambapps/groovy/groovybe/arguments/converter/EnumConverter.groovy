@@ -1,5 +1,6 @@
 package com.tambapps.groovy.groovybe.arguments.converter
 
+import com.tambapps.groovy.groovybe.util.Utils
 import picocli.CommandLine
 
 class EnumConverter<T extends Enum> implements CommandLine.ITypeConverter<T> {
@@ -18,7 +19,7 @@ class EnumConverter<T extends Enum> implements CommandLine.ITypeConverter<T> {
         return constant
       }
     }
-    def possibleValues = constants.collect {it.name().toLowerCase().replaceAll("_", "-") }
+    def possibleValues = Utils.getEnumPossibleValues(clazz)
     throw new CommandLine.TypeConversionException("Unkown value '$value' (Possible values are $possibleValues)")
   }
 }
