@@ -22,9 +22,8 @@ Utils.debug = arguments.debug
 File tempDir = File.createTempDir('groovybe')
 
 try {
-
   File jarWithDependencies
-  String className = Utils.nameWithExtension(arguments.inputFile.name, '')
+  String className = arguments.mainClass ?: Utils.nameWithExtension(arguments.inputFile.name, '')
   if (arguments.inputFile.name.endsWith('.jar')) {
     jarWithDependencies = arguments.inputFile
   } else {

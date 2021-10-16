@@ -16,6 +16,9 @@ class Arguments {
   @CommandLine.Option(names = ['-v', '--version'], description = 'Groovy version to use', showDefaultValue = CommandLine.Help.Visibility.ALWAYS)
   String version = '3.0.9'
 
+  @CommandLine.Option(names = ['-m', '--main-class'], description = "Main class. Default to the input file's name")
+  String mainClass
+
   @CommandLine.Option(names = ['-j', '--jpackage-path'], description = "Path of jpackage. Only useful for 'appimage' type")
   File jpackageFile = null
 
