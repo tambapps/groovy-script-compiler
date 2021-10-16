@@ -49,7 +49,7 @@ class GroovybeIT {
   @Test
   void testBuildNativeBinary() {
     File scriptFile = getResourceFile("/HelloWorld.groovy")
-    Groovybe.main(new String[] {scriptFile.path, '-t', 'native_binary'})
+    Groovybe.main(new String[] {scriptFile.path, '-t', 'native-binary'})
     outputFile = new File(Utils.CURRENT_DIRECTORY, "HelloWorld")
     assertTrue(outputFile.exists())
     assertTrue(outputFile.canExecute())
