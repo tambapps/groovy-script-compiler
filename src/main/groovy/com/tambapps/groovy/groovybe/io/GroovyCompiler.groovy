@@ -1,5 +1,7 @@
 package com.tambapps.groovy.groovybe.io
 
+import com.tambapps.groovy.groovybe.io.compiler.CustomAntlr4PluginFactory
+
 import com.tambapps.groovy.groovybe.util.Utils
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.tools.FileSystemCompiler
@@ -18,6 +20,8 @@ class GroovyCompiler {
       printStack = true
       classpath = deps.collect { it.absolutePath }.join(File.pathSeparator)
     }.toCompilerConfiguration()
+    // hack for groovy native-image. Whole explanation at TODO
+    configuration.pluginFactory = new CustomAntlr4PluginFactory()
     this.compiler = new FileSystemCompiler(configuration, null)
   }
 
