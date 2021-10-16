@@ -6,6 +6,8 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class Utils {
 
+  static boolean debug = false
+
   static final File CURRENT_DIRECTORY = new File("." + File.separator)
   static final File HOME_DIRECTORY = new File(System.getProperty("user.home"))
 

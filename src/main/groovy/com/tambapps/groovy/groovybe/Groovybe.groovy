@@ -8,8 +8,10 @@ import com.tambapps.groovy.groovybe.io.GroovyDepsFetcher
 import com.tambapps.groovy.groovybe.io.process.Jpackage
 import com.tambapps.groovy.groovybe.io.process.NativeImage
 import com.tambapps.groovy.groovybe.io.stream.JarMergingOutputStream
+import com.tambapps.groovy.groovybe.util.FlushPrintWriter
 import com.tambapps.groovy.groovybe.util.Utils
 import com.tambapps.maven.dependency.resolver.data.Artifact
+import org.codehaus.groovy.tools.FileSystemCompiler
 
 import java.nio.file.Path
 
@@ -17,7 +19,7 @@ Arguments arguments = Arguments.parseArgs(args)
 if (!arguments) {
   return
 }
-setProperty('DEBUG', arguments.debug)
+Utils.debug = arguments.debug
 
 File tempDir = File.createTempDir('groovybe')
 
@@ -37,7 +39,7 @@ try {
   }
   transformedScriptFile.text = transformedText
 
-  if (getProperty('DEBUG') && !sourceDependencyGrabber.grabbedArtifacts.isEmpty()) {
+  if (Utils.debug && !sourceDependencyGrabber.grabbedArtifacts.isEmpty()) {
     debugPrintln("found @Grab artifacts" +
         sourceDependencyGrabber.grabbedArtifacts.collect(Artifact.&toArtifactString))
     debugPrintln("ignored @Grab annotation(s), the artifact dependencies will be included in the jar")
@@ -51,6 +53,9 @@ try {
 
   // compile class
   debugPrintln('compiling script')
+  if (Utils.debug) {
+    FileSystemCompiler.displayVersion(new FlushPrintWriter(System.out))
+  }
   GroovyCompiler compiler = new GroovyCompiler(tempDir, dependencyJars)
   File classFile = compiler.compile(transformedScriptFile)
 
@@ -101,7 +106,7 @@ try {
 }
 
 void debugPrintln(Object value) {
-  if (getProperty('DEBUG')) {
+  if (Utils.debug) {
     println(value)
   }
 }
