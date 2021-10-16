@@ -15,7 +15,7 @@ class IOUtils {
 
   static void runProcess(List<String> command, String errorMessage) {
     Process process = command.join(' ').execute()
-    process.consumeProcessOutput(new PrintWriter(System.out, true), new PrintWriter(System.err, true))
+    process.consumeProcessOutput(new FlushPrintWriter(System.out), new FlushPrintWriter(System.err))
     int outputCode = process.waitFor()
     if (outputCode != 0) {
       throw new IOException(errorMessage)
