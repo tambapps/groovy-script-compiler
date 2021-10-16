@@ -93,6 +93,8 @@ try {
   } else {
     println "$normalizedPath was generated"
   }
+} catch (IOException e) {
+  println e.message
 } finally {
   // cleaning
   tempDir.deleteDir()
