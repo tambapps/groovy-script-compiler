@@ -6,7 +6,6 @@ import com.tambapps.maven.dependency.resolver.data.Artifact
 import com.tambapps.maven.dependency.resolver.repository.RemoteSavingMavenRepository
 import com.tambapps.maven.dependency.resolver.version.FirstVersionFoundConflictResolver
 
-
 class GroovyDepsFetcher {
 
   // TODO handle case for people that doesn't have Maven. Be careful, we still need to save the files

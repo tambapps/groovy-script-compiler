@@ -22,40 +22,47 @@ Utils.debug = arguments.debug
 File tempDir = File.createTempDir('groovybe')
 
 try {
-  GroovyDepsFetcher groovyDepsFetcher = new GroovyDepsFetcher()
-  SourceDependencyGrabber sourceDependencyGrabber = new SourceDependencyGrabber()
 
-  // extract @Grab artifacts if any
-  File transformedScriptFile = new File(tempDir, arguments.scriptFile.name)
-  transformedScriptFile.text = sourceDependencyGrabber.transform(arguments.scriptFile.readLines())
+  File jarWithDependencies
+  String className = Utils.nameWithExtension(arguments.inputFile.name, '')
+  if (arguments.inputFile.name.endsWith('.jar')) {
+    jarWithDependencies = arguments.inputFile
+  } else {
+    GroovyDepsFetcher groovyDepsFetcher = new GroovyDepsFetcher()
+    SourceDependencyGrabber sourceDependencyGrabber = new SourceDependencyGrabber()
 
-  if (Utils.debug && !sourceDependencyGrabber.grabbedArtifacts.isEmpty()) {
-    debugPrintln("found @Grab artifacts" +
-        sourceDependencyGrabber.grabbedArtifacts.collect(Artifact.&toArtifactString))
-    debugPrintln("ignored @Grab annotation(s), the artifact dependencies will be included in the jar")
-  }
+    // extract @Grab artifacts if any
+    File transformedScriptFile = new File(tempDir, arguments.inputFile.name)
+    transformedScriptFile.text = sourceDependencyGrabber.transform(arguments.inputFile.readLines())
 
-  // Fetch dependencies. They will constitute the classpath used for compilation
-  debugPrintln('retrieving dependencies')
-  List<File> fetchedDependencyJars = groovyDepsFetcher.fetch(arguments.version, arguments.subProjects,
-      sourceDependencyGrabber.grabbedArtifacts)
-  List<File> dependencyJars = fetchedDependencyJars + arguments.additionalJars
-
-  // compile class
-  debugPrintln('compiling script (Groovy compiler ' + GroovySystem.getVersion() + ')')
-  GroovyCompiler compiler = new GroovyCompiler(tempDir, dependencyJars, arguments.outputType == OutputType.NATIVE_BINARY)
-  File classFile = compiler.compile(transformedScriptFile)
-
-  // compile executable jar
-  debugPrintln('generating JAR')
-  String className = Utils.nameWithExtension(arguments.scriptFile.name, '')
-  File jarWithDependencies = new File(tempDir, "${className}-exec.jar")
-  try (JarMergingOutputStream os = new JarMergingOutputStream(new FileOutputStream(jarWithDependencies), className)) {
-    os.writeClass(classFile)
-    for (dependencyJar in dependencyJars) {
-      os.writeJar(dependencyJar)
+    if (Utils.debug && !sourceDependencyGrabber.grabbedArtifacts.isEmpty()) {
+      debugPrintln("found @Grab artifacts" +
+          sourceDependencyGrabber.grabbedArtifacts.collect(Artifact.&toArtifactString))
+      debugPrintln("ignored @Grab annotation(s), the artifact dependencies will be included in the jar")
     }
-    os.flush()
+
+    // Fetch dependencies. They will constitute the classpath used for compilation
+    debugPrintln('retrieving dependencies')
+    List<File> fetchedDependencyJars = groovyDepsFetcher.fetch(arguments.version, arguments.subProjects,
+        sourceDependencyGrabber.grabbedArtifacts)
+    List<File> dependencyJars = fetchedDependencyJars + arguments.additionalJars
+
+    // compile class
+    debugPrintln('compiling script (Groovy compiler ' + GroovySystem.getVersion() + ')')
+    GroovyCompiler compiler = new GroovyCompiler(tempDir, dependencyJars, arguments.outputType == OutputType.NATIVE_BINARY)
+    File classFile = compiler.compile(transformedScriptFile)
+
+    // compile executable jar
+    debugPrintln('generating JAR')
+    jarWithDependencies = new File(tempDir, "${className}-exec.jar")
+
+    try (JarMergingOutputStream os = new JarMergingOutputStream(new FileOutputStream(jarWithDependencies), className)) {
+      os.writeClass(classFile)
+      for (dependencyJar in dependencyJars) {
+        os.writeJar(dependencyJar)
+      }
+      os.flush()
+    }
   }
 
   File outputFile

@@ -7,8 +7,8 @@ import picocli.CommandLine
 
 class Arguments {
 
-  @CommandLine.Parameters(paramLabel = "SCRIPTFILE", description = 'The script file to compile', arity = '1')
-  File scriptFile
+  @CommandLine.Parameters(paramLabel = "inputFile", description = 'The script file to compile (can be an executable jar instead for appimage and native-binary)', arity = '1')
+  File inputFile
 
   @CommandLine.Option(names = ['-t', '--type'], description = 'The type of output to create', converter = OutputTypeConverter, showDefaultValue = CommandLine.Help.Visibility.ALWAYS)
   OutputType outputType = OutputType.JAR

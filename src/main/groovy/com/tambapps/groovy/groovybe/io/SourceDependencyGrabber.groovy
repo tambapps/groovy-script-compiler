@@ -1,6 +1,7 @@
 package com.tambapps.groovy.groovybe.io
 
 import com.tambapps.maven.dependency.resolver.data.Artifact
+import groovy.transform.CompileStatic
 
 import java.util.regex.Matcher
 
@@ -9,6 +10,7 @@ import java.util.regex.Matcher
  * included instead, to allow a faster runtime
  * TODO document that
  */
+@CompileStatic
 class SourceDependencyGrabber {
 
   private static final GRAB_PATTERN = ~/@Grab\(['"]([\w-.:]+)['"]\)/

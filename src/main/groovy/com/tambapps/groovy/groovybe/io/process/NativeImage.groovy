@@ -3,10 +3,12 @@ package com.tambapps.groovy.groovybe.io.process
 import com.tambapps.groovy.groovybe.util.IOUtils
 import com.tambapps.groovy.groovybe.util.Utils
 import groovy.json.JsonOutput
+import groovy.transform.CompileStatic
 
 /**
  * Class used to execute native-image (graalvm) from a system command
  */
+@CompileStatic
 class NativeImage {
 
   File nativeImageFile

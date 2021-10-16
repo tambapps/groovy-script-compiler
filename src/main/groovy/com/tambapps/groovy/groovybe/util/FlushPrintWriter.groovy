@@ -1,7 +1,9 @@
 package com.tambapps.groovy.groovybe.util
 
+import groovy.transform.CompileStatic
 import org.jetbrains.annotations.NotNull
 
+@CompileStatic
 class FlushPrintWriter extends PrintWriter {
 
   FlushPrintWriter(@NotNull OutputStream out) {
