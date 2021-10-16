@@ -1,7 +1,6 @@
 package com.tambapps.groovy.groovybe.io.stream
 
 import com.tambapps.groovy.groovybe.util.IOUtils
-import groovy.transform.CompileStatic
 
 import java.util.jar.Attributes
 import java.util.jar.JarEntry
@@ -10,7 +9,6 @@ import java.util.jar.JarOutputStream
 import java.util.jar.Manifest
 import java.util.zip.ZipEntry
 
-@CompileStatic
 class JarMergingOutputStream extends JarOutputStream {
   private List<String> writtenEntries = []
 

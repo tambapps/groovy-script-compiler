@@ -1,8 +1,5 @@
 package com.tambapps.groovy.groovybe.util
 
-import groovy.transform.CompileStatic
-
-@CompileStatic
 class IOUtils {
 
   static void copyStream(InputStream inputStream, OutputStream outputStream) throws IOException {

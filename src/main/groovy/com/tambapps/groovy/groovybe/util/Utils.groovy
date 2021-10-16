@@ -1,8 +1,5 @@
 package com.tambapps.groovy.groovybe.util
 
-import groovy.transform.CompileStatic
-
-@CompileStatic
 class Utils {
 
   static boolean debug = false
