@@ -79,7 +79,7 @@ try {
     case OutputType.NATIVE_BINARY:
       debugPrintln('running native-image')
       NativeImage nativeImage = new NativeImage(arguments.nativeImageFile)
-      outputFile = nativeImage.run(jarWithDependencies, className, arguments.outputDir)
+      outputFile = nativeImage.run(jarWithDependencies, className, tempDir, arguments.outputDir)
       break
     default:
       throw new UnsupportedOperationException("Output type ${arguments.outputType} is not supported")
