@@ -6,6 +6,31 @@ It will compile your script into a `.class` file, fetch the dependencies (includ
 an executable jar. With this jar, it can convert it into an appimage using [jpackage](https://docs.oracle.com/en/java/javase/14/docs/specs/man/jpackage.html) or into a 
 native binary executable using [native-image](https://www.graalvm.org/reference-manual/native-image/).
 
+## Why this project
+
+At first, I wanted to make a tool that converts a groovy script into a binary executable. 
+I wanted to have
+only one compiled file to execute a groovy script fastly. You could put `#!/user/bin/env groovy` at the 
+first line of your script and then make your script executable (`chmod u+x MyScript.groovy`) but running it
+would still be a little slow since groovy will have to compile your script everytime you run it.
+To generate an executable file, I first looked at
+Java `jpackage` that generates appimage, but I saw that it generates other files along with the executable, and if you
+delete these other files, it doesn't work anymore.
+
+Then I saw GraalVM `native-image`, but its capabilities with Groovy are limited (e.g. you can't use Groovy dynamic features).
+
+So I decided to focus on generating a jar compatible with any JVM 8+.
+
+
+## How to install
+You don't need to have Groovy installed in order to generate the jar. You just need Java 8+ and Maven
+
+Run
+```shell
+mvn compile
+```
+This will generate the executable jar with dependencies in a `target/` folder.
+
 ## How to use
 Provide an input file to convert it into an executable jar 
 (jar with all the required dependencies), an appimage, or a native binary executable. 
