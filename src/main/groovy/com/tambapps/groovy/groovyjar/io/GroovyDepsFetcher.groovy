@@ -8,19 +8,18 @@ import com.tambapps.maven.dependency.resolver.version.FirstVersionFoundConflictR
 
 class GroovyDepsFetcher {
 
-  // TODO handle case for people that doesn't have Maven. Be careful, we still need to save the files
+  // dependencies will be saved in local Maven repository
   private final RemoteSavingMavenRepository repository = new RemoteSavingMavenRepository()
   private final DependencyResolver resolver = new DependencyResolver(repository)
 
-  // for now it only support groovy 3.X
-  // TODO for groovy 4.X groupId has changed. handle that
   List<File> fetch(String groovyVersion, List<GroovySubProject> submodules, List<Artifact> grabbedArtifacts) {
+    String groovyGroupId = getGroovyGroupId(groovyVersion)
     if (submodules.contains(GroovySubProject.ALL)) {
-      resolver.resolve('org.codehaus.groovy', GroovySubProject.ALL.artifactId, groovyVersion)
+      resolver.resolve(groovyGroupId, GroovySubProject.ALL.artifactId, groovyVersion)
     } else {
-      resolver.resolve('org.codehaus.groovy', 'groovy', groovyVersion)
+      resolver.resolve(groovyGroupId, 'groovy', groovyVersion)
       for (submodule in submodules) {
-        resolver.resolve('org.codehaus.groovy', submodule.artifactId, groovyVersion)
+        resolver.resolve(groovyGroupId, submodule.artifactId, groovyVersion)
       }
     }
     for (artifact in grabbedArtifacts) {
@@ -29,5 +28,9 @@ class GroovyDepsFetcher {
     return resolver.results
         .getArtifacts(new FirstVersionFoundConflictResolver())
         .collect(repository.&getJarFile)
+  }
+
+  private static String getGroovyGroupId(String version) {
+    return version[0].isNumber() && version[0].toInteger() >= 4 ? 'org.apache.groovy' : 'org.codehaus.groovy'
   }
 }
