@@ -1,6 +1,6 @@
 package com.tambapps.groovy.groovyjar.io
 
-import com.tambapps.groovy.groovybe.arguments.GroovySubProject
+import com.tambapps.groovy.groovyjar.arguments.GroovySubProject
 import com.tambapps.maven.dependency.resolver.DependencyResolver
 import com.tambapps.maven.dependency.resolver.data.Artifact
 import com.tambapps.maven.dependency.resolver.repository.RemoteSavingMavenRepository

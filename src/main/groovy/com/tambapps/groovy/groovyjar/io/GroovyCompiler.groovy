@@ -1,8 +1,8 @@
 package com.tambapps.groovy.groovyjar.io
 
-import com.tambapps.groovy.groovybe.io.compiler.CustomAntlr4PluginFactory
+import com.tambapps.groovy.groovyjar.io.compiler.CustomAntlr4PluginFactory
 
-import com.tambapps.groovy.groovybe.util.Utils
+import com.tambapps.groovy.groovyjar.util.Utils
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.tools.FileSystemCompiler
 

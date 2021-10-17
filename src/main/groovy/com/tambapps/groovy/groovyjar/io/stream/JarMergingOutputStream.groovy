@@ -1,6 +1,6 @@
 package com.tambapps.groovy.groovyjar.io.stream
 
-import com.tambapps.groovy.groovybe.util.IOUtils
+import com.tambapps.groovy.groovyjar.util.IOUtils
 
 import java.util.jar.Attributes
 import java.util.jar.JarEntry

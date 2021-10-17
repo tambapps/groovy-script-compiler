@@ -1,6 +1,6 @@
 package com.tambapps.groovy.groovyjar.io.compiler
 
-import com.tambapps.groovy.groovybe.util.ReflectionUtils;
+import com.tambapps.groovy.groovyjar.util.ReflectionUtils;
 import org.apache.groovy.parser.antlr4.Antlr4ParserPlugin
 import org.apache.groovy.parser.antlr4.Antlr4PluginFactory
 import org.apache.groovy.parser.antlr4.AstBuilder

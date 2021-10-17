@@ -1,14 +1,14 @@
 package com.tambapps.groovy.groovyjar
 
-import com.tambapps.groovy.groovybe.arguments.Arguments
-import com.tambapps.groovy.groovybe.arguments.OutputType
-import com.tambapps.groovy.groovybe.io.SourceDependencyGrabber
-import com.tambapps.groovy.groovybe.io.GroovyCompiler
-import com.tambapps.groovy.groovybe.io.GroovyDepsFetcher
-import com.tambapps.groovy.groovybe.io.process.Jpackage
-import com.tambapps.groovy.groovybe.io.process.NativeImage
-import com.tambapps.groovy.groovybe.io.stream.JarMergingOutputStream
-import com.tambapps.groovy.groovybe.util.Utils
+import com.tambapps.groovy.groovyjar.arguments.Arguments
+import com.tambapps.groovy.groovyjar.arguments.OutputType
+import com.tambapps.groovy.groovyjar.io.SourceDependencyGrabber
+import com.tambapps.groovy.groovyjar.io.GroovyCompiler
+import com.tambapps.groovy.groovyjar.io.GroovyDepsFetcher
+import com.tambapps.groovy.groovyjar.io.process.Jpackage
+import com.tambapps.groovy.groovyjar.io.process.NativeImage
+import com.tambapps.groovy.groovyjar.io.stream.JarMergingOutputStream
+import com.tambapps.groovy.groovyjar.util.Utils
 import com.tambapps.maven.dependency.resolver.data.Artifact
 
 import java.nio.file.Path
@@ -19,7 +19,7 @@ if (!arguments) {
 }
 Utils.debug = arguments.debug
 
-File tempDir = File.createTempDir('groovybe')
+File tempDir = File.createTempDir('groovyjar')
 
 try {
   File jarWithDependencies

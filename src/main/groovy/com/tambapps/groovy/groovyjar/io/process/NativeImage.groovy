@@ -1,7 +1,7 @@
 package com.tambapps.groovy.groovyjar.io.process
 
-import com.tambapps.groovy.groovybe.util.IOUtils
-import com.tambapps.groovy.groovybe.util.Utils
+import com.tambapps.groovy.groovyjar.util.IOUtils
+import com.tambapps.groovy.groovyjar.util.Utils
 import groovy.json.JsonOutput
 
 /**

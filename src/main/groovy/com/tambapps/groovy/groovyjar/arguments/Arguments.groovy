@@ -1,8 +1,8 @@
 package com.tambapps.groovy.groovyjar.arguments
 
-import com.tambapps.groovy.groovybe.arguments.converter.GroovySubProjectConverter
-import com.tambapps.groovy.groovybe.arguments.converter.OutputTypeConverter
-import com.tambapps.groovy.groovybe.util.Utils
+import com.tambapps.groovy.groovyjar.arguments.converter.GroovySubProjectConverter
+import com.tambapps.groovy.groovyjar.arguments.converter.OutputTypeConverter
+import com.tambapps.groovy.groovyjar.util.Utils
 import picocli.CommandLine
 
 class Arguments {
