@@ -29,7 +29,6 @@ class Jpackage {
     ]
     IOUtils.runProcess(command, "jpackage terminated with an error")
     // the files are generated in a directory named $className
-    // TODO handle output dir. We'll need to move directory
     return new File(outputDir, className)
   }
 

@@ -7,7 +7,6 @@ import java.util.regex.Matcher
 /**
  * Class reading source file to skip @Grab lines in the output. Dependency jar(s) will be
  * included instead, to allow a faster runtime
- * TODO document that
  */
 class SourceDependencyGrabber {
 

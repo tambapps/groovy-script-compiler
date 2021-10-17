@@ -24,7 +24,7 @@ class GroovyCompiler {
       classpath = deps.collect { it.absolutePath }.join(File.pathSeparator)
       it.compileStatic = compileStatic
     }.toCompilerConfiguration()
-    // hack for groovy native-image. Whole explanation at TODO
+    // hack for groovy native-image. Whole explanation at CustomModuleNode
     configuration.pluginFactory = new CustomAntlr4PluginFactory()
     this.compiler = new FileSystemCompiler(configuration, null)
   }
